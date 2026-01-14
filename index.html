@@ -90,13 +90,13 @@ body {
     flex-shrink: 0;
     overflow-y: auto;   /* 允许上下滚动 */
     overflow-x: hidden;
-
+    
     /* 🎨 布局关键：让内容垂直居中偏上，不被底部挡住 */
     display: flex;
     flex-direction: column;
     align-items: center;        /* 水平居中 */
     justify-content: center;    /* 垂直居中 */
-
+    
     padding-top: 40px;          /* 顶部留白 */
     padding-bottom: 120px;      /* 🚨 底部留出大空间，防止被Dock栏挡住！ */
     box-sizing: border-box;
@@ -295,19 +295,19 @@ body {
 /* 💎 Pro 级毛玻璃 Dock 栏 */
 .dock-bar { 
     pointer-events: auto; 
-
+    
     /* 📏 尺寸升级：更长更宽 */
     width: 94%;              /* 手机上几乎占满宽度 */
     max-width: 440px;        /* 电脑/大屏上限制最大宽度，更有 Pro 质感 */
     height: 90px;            /* 高度稍微增加，更有分量感 */
-
+    
     /* 🌫️ 顶级毛玻璃质感 */
     background: rgba(255,255,255,0.55);   /* 降低不透明度，让背景透出来 */
     backdrop-filter: blur(30px);          /* 强力高斯模糊 */
     -webkit-backdrop-filter: blur(30px);  /* 苹果手机专用兼容 */
     border: 1.5px solid rgba(255,255,255,0.6); /* 增加一道玻璃光泽边框 */
     box-shadow: 0 15px 40px rgba(0,0,0,0.12);  /* 浮起感更强的阴影 */
-
+    
     border-radius: 45px;     /* 更圆润的导角 */
     display: flex; 
     justify-content: space-around; 
@@ -1652,55 +1652,8 @@ input[type="file"] { display: none; }
     box-shadow: none;
 }
 #wc-receive-modal .tm-btn:active { background: #06ad56; }
-/* 🍮 QQ软软的果冻弹力动画 */
-@keyframes jelly {
-    0% { transform: scale(1); }
-    30% { transform: scale(0.75); } /* 按下去扁一点 */
-    40% { transform: scale(1.15); } /* 弹起来大一点 */
-    50% { transform: scale(0.95); } /* 回弹一点 */
-    65% { transform: scale(1.02); } /* 微调 */
-    100% { transform: scale(1); }   /* 恢复原状 */
-}
 
-/* 给所有图标加上过渡效果，平时摸上去也会丝滑一点 */
-.std-icon, .short-frame, .gb-shell-long, .p2-header-clean, .music-av-simple, .home-btn-area {
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); /* 贝塞尔曲线让回弹更自然 */
-}
-
-/* 激活“果冻”状态的样式类 */
-.jelly-pop {
-    animation: jelly 0.5s;
-}
-/* 🖼️ 壁纸预览框样式 */
-.wall-preview-area {
-    display: flex;
-    justify-content: space-around;
-    padding: 15px;
-    background: #f5f5f5;
-    margin-bottom: 10px;
-    border-radius: 12px;
-}
-.wall-item {
-    text-align: center;
-    font-size: 12px;
-    color: #666;
-}
-.wall-preview-box {
-    width: 80px;     /* 缩小版手机宽度 */
-    height: 140px;   /* 缩小版手机高度 */
-    background-color: #e0e0e0;
-    border-radius: 10px;
-    margin-bottom: 8px;
-    background-size: cover; /* 图片填满 */
-    background-position: center;
-    border: 2px solid white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 小阴影 */
-    transition: transform 0.2s;
-}
-.wall-preview-box:active {
-    transform: scale(0.95); /* 点击时的微动效 */
-}  
-</style>
+  </style>
 </head>
 <body>
     <div class="iphone locked page-1" id="box">
@@ -1741,12 +1694,12 @@ input[type="file"] { display: none; }
 
        <div id="main-desktop">
     <div class="swiper-wrapper" id="sw">
-
+        
         <div class="desktop-page">
             <div class="content-box">
-
+                
                 <div class="p1-time" id="d-time">00:00</div>
-
+                
                 <div class="fix-h-sm" style="display:grid; grid-template-columns:1.1fr 1fr; gap:12px;">
                     <div class="l-glass dashed-diary" style="height:100%">
                         <div class="diary-line" id="dl1" onclick="editT('dl1','u_dl1')">记录一刻的心动...</div>
@@ -1788,7 +1741,7 @@ input[type="file"] { display: none; }
 
             </div> </div> <div class="desktop-page">
             <div class="content-box">
-
+                
                 <div class="p2-header-clean fix-h-lg">
                     <div class="p2-bg-c" id="p2bg" onclick="pick('f-p2bg')"></div>
                     <div class="p2-av-c" id="p2av" onclick="pick('f-p2av')"></div>
@@ -1837,34 +1790,15 @@ input[type="file"] { display: none; }
         </div>
 
         <!-- ⚙️ 设置应用 -->
-        <div class="settings-app" id="settings-app">   
-       <div class="sa-header">
+        <div class="settings-app" id="settings-app">
+            <div class="sa-header">
                 <div class="sa-back paw-back" onclick="closeCurrentPage()">返回</div>
                 <div style="flex: 1; text-align: center;" id="settings-title">系统设置</div>
                 <div style="width: 40px;"></div>
             </div>
 
             <div class="sa-body" id="sa-body">
-    
-    <div class="wall-preview-area">
-        <div class="wall-item" onclick="pick('f-wall')">
-            <div class="wall-preview-box" id="preview-lock"></div>
-            <div>锁屏壁纸</div>
-        </div>
-
-        <div class="wall-item" onclick="pick('f-desktop')">
-            <div class="wall-preview-box" id="preview-desktop"></div>
-            <div>桌面壁纸</div>
-        </div>
-    </div>
-    
-    </div>
-
-<input type="file" id="f-wall" accept="image/*" style="display:none" onchange="h('wall')">
-<input type="file" id="f-desktop" accept="image/*" style="display:none" onchange="h('desktop')">
-
-
-    <!-- 内容通过JS动态加载 -->
+                <!-- 内容通过JS动态加载 -->
             </div>
         </div>
 
@@ -2205,13 +2139,7 @@ input[type="file"] { display: none; }
     </div>
 
     <input type="file" id="real-file-btn" accept="image/*" style="display:none" onchange="window.handleSendImg(this)">
-<input type="file" id="f-desktop" accept="image/*" style="display:none" onchange="h('desktop')">
 
-<input type="file" id="f-wall" accept="image/*" style="display:none" onchange="h('wall')">
-
-<input type="file" id="f-avL" accept="image/*" style="display:none" onchange="h('avL')">
-<input type="file" id="f-avR" accept="image/*" style="display:none" onchange="h('avR')">
-<input type="file" id="f-pwall" accept="image/*" style="display:none" onchange="h('pwall')">
 
     <div class="ele-modal" id="wc-ele-modal">
         <div class="ele-header">
@@ -2320,134 +2248,101 @@ input[type="file"] { display: none; }
                 </div>
             </div>
         </div>
-<script>
-       // 1. 音频引擎 (调教版：清脆的水滴/气泡声 💧)
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    let audioCtx;
-
-    function playCrispPop() {
-        if (!audioCtx) audioCtx = new AudioContext();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-
-        // ✨ 关键修改：用 'sine' 正弦波，最干净清脆
-        osc.type = 'sine'; 
-
-        // ✨ 频率拉高：从 1200Hz 降到 100Hz (高音起步，瞬间下潜，形成“啵”声)
-        osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.08);
-
-        // 音量：极短促 (0.08秒结束)
-        gain.gain.setValueAtTime(0.6, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
-
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.08);
-    }
-
-    // 2. 注入动画样式 (保持原样：微微Q弹)
-    const styleSheet = document.createElement("style");
-    styleSheet.innerText = `
-        @keyframes jelly-soft {
-            0% { transform: scale(1); }
-            40% { transform: scale(0.95); } 
-            70% { transform: scale(1.02); } 
-            100% { transform: scale(1); }
-        }
-        .jelly-active { animation: jelly-soft 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
-    `;
-    document.head.appendChild(styleSheet);
-
-    // 3. 全局特效触发器
-    window.playEffect = function(element) {
-        // 🔊 播声音 (清脆版)
-        try { playCrispPop(); } catch(e) {}
-
-        // 🍮 播动画
-        if(element) {
-            element.classList.remove('jelly-active');
-            void element.offsetWidth; // 强制重绘
-            element.classList.add('jelly-active');
-        }
-    };
-
-
-    /* =================================================================
-       ✅ 1. 全局配置
-       ================================================================= */
+    <script>
+        /* ===========================
+       ✅ 全局默认配置 (必须放在最前面！)
+       =========================== */
     const defaultAppSettings = {
-        theme: { lockWallpaper: '', desktopWallpaper: '', appIcons: {}, primaryColor: '#07c160' }
+        theme: {
+            lockWallpaper: '',
+            desktopWallpaper: '',
+            desktopWallpaper2: '',
+            appIcons: {},
+            primaryColor: '#07c160'
+        },
+        font: {
+            enabled: false,
+            url: '',
+            name: '默认字体'
+        },
+        apis: {
+            primary: {
+                provider: 'openai',
+                endpoint: 'https://api.openai.com/v1',
+                apiKey: '',
+                model: 'gpt-3.5-turbo',
+                availableModels: ['gpt-3.5-turbo', 'gpt-4'],
+                enabled: true
+            },
+            secondary: {
+                provider: 'gemini',
+                endpoint: 'https://generativelanguage.googleapis.com/v1',
+                apiKey: '',
+                model: 'gemini-2.0-flash-exp',
+                availableModels: ['gemini-2.0-flash-exp', 'gemini-1.5-flash'],
+                enabled: true,
+                function: 'memory_management'
+            }
+        },
+        voice: {
+            enabled: false,
+            provider: 'minimax',
+            apiKey: '',
+            groupId: '',
+            voiceId: ''
+        },
+        backup: {
+            autoBackup: false,
+            interval: 24,
+            lastBackup: null,
+            location: 'local',
+            githubToken: '',
+            githubRepo: ''
+        },
+        system: {
+            notifications: true,
+            vibration: true,
+            autoClearCache: true,
+            language: 'zh-CN'
+        }
     };
 
-    function getAppSettings() { return defaultAppSettings; }
-
-    /* =================================================================
-       🔒 2. 滑动与交互逻辑
-       ================================================================= */
+    // 🔒 1. 锁屏滑动逻辑 (最优先，无依赖)
     let sY=0, sX=0;
+    const ls=document.getElementById('lock-screen'), box=document.getElementById('box'), sw=document.getElementById('main-desktop');
 
-    window.addEventListener('DOMContentLoaded', () => {
-        const ls = document.getElementById('lock-screen');
-        const box = document.getElementById('box'); 
-        const sw = document.getElementById('sw'); 
-
-        if(ls) {
-            ls.addEventListener('touchstart', e=>{ sY=e.touches[0].clientY; });
-            ls.addEventListener('touchend', e=>{ 
-                let dist = sY - e.changedTouches[0].clientY;
-                if(dist > 50 || Math.abs(dist) < 10) { 
-                    playEffect(null); 
-                    box.classList.add('unlocked');
-                    setTimeout(()=>{ ls.style.display='none'; }, 400); 
-                }
-            });
-        }
-
-        if(sw) {
-            sw.addEventListener('touchstart', e=>sX=e.touches[0].clientX);
-            sw.addEventListener('touchend', e=>{ 
-                const d=e.changedTouches[0].clientX-sX; 
-                if(Math.abs(d)>60) {
-                    box.classList.toggle('page-1', d>0); 
-                    box.classList.toggle('page-2', d<0); 
-                }
-            });
+    ls.addEventListener('touchstart', e=>{ sY=e.touches[0].clientY; });
+    ls.addEventListener('touchend', e=>{ 
+        let dist = sY - e.changedTouches[0].clientY;
+        if(dist > 50 || Math.abs(dist) < 10) { 
+            box.classList.add('unlocked');
+            setTimeout(()=>{ ls.style.display='none'; }, 400); 
         }
     });
 
-    /* =================================================================
-       🛠️ 3. 核心修复：壁纸预览 + 组件修复 + 图标找回 (完整版)
-       ================================================================= */
+            // 2. 基础工具 - 全能修复版 (包含上传、文字、时钟)
 
-    // 1. 触发文件选择器
+    // 触发文件选择
     window.pick = function(id){ 
         const el = document.getElementById(id);
-        if(el) {
-            // 尝试播放音效 (如果有的话)
-            if(typeof window.playEffect === 'function') window.playEffect(document.activeElement);
-            el.click(); 
-        } else {
-            console.error("❌ 找不到 input 标签: " + id);
-            alert("代码错误：找不到 id 为 " + id + " 的上传通道，请检查 HTML");
-        }
+        if(el) el.click(); 
+        else console.error('找不到文件上传控件:', id);
     }
 
-    // 2. 修改文字
+    // 修改文字
     window.editT = function(id,k){ 
         const el = document.getElementById(id);
         if(!el) return;
-        if(typeof window.playEffect === 'function') window.playEffect(el); 
         const n=prompt("修改文字：", el.innerText); 
-        if(n){ el.innerText=n; localStorage.setItem(k,n); }
+        if(n){ 
+            el.innerText=n; 
+            localStorage.setItem(k,n); 
+        }
     }
 
-    // 3. 🟢 核心上传逻辑：壁纸 & 小组件 (修复预览图不显示)
+    // 🟢 核心修复：通用图片上传 (处理头像、相框等)
     window.h = function(k){ 
+        // 找到对应的 hidden input
         const input = document.getElementById('f-'+k);
         if(!input || !input.files || !input.files[0]) return;
 
@@ -2455,31 +2350,17 @@ input[type="file"] { display: none; }
         const r = new FileReader(); 
         r.onload = (e)=>{
             const dataUrl = e.target.result;
-
-            if(k === 'wall') {
-                // 🔒 锁屏壁纸
-                localStorage.setItem('u_lock_wall', dataUrl); 
-                updateWallpaperPreview('lock', dataUrl);
-                alert('✅ 锁屏壁纸更换成功！');
-            } 
-            else if (k === 'desktop' || k === 'dwall') {
-                // 🖼️ 桌面壁纸 (两页同步)
-                localStorage.setItem('u_desktop_wall', dataUrl);
-                updateWallpaperPreview('desktop', dataUrl);
-                alert('✅ 桌面壁纸更换成功！');
-            } 
-            else {
-                // 🧩 通用组件 (相框、头像、第二页组件)
-                localStorage.setItem('u_'+k, dataUrl); 
-                updateWallpaperPreview(k, dataUrl);
-                
-                if(k.includes('p2')) alert('✨ 第二页组件更新成功！');
-                else alert('✨ 图片上传成功！');
-            }
+            // 1. 存入缓存
+            localStorage.setItem('u_'+k, dataUrl); 
+            // 2. 立即刷新画面
+            updateWallpaperPreview(k, dataUrl);
+            // 3. 提示成功
+            showUploadSuccess();
         }; 
         r.readAsDataURL(f); 
     }
-    // 4. 🎨 App图标上传 (修复版：包含全部 16+ 个应用)
+
+    // 🟢 核心修复：应用图标上传
     window.hIcon = function(appId){ 
         const input = document.getElementById('f-icon-'+appId);
         if(!input || !input.files || !input.files[0]) return;
@@ -2488,190 +2369,175 @@ input[type="file"] { display: none; }
         const r = new FileReader(); 
         r.onload = (e)=>{
             const dataUrl = e.target.result;
-            
-            // 1. 保存数据
             localStorage.setItem('app_icon_'+appId, dataUrl); 
 
-            // 2. 🚨 核心修复：建立完整的 ID 映射表 (防止漏掉)
-            const iconMap = {
-                // --- 底部 Dock 栏 (4个) ---
-                'wechat':    'dch',       // 微信
-                'bottle':    'dbo',       // 漂流瓶
-                'worldbook': 'dbk',       // 世界书
-                'settings':  'dst',       // 设置
-
-                // --- 桌面普通应用 (12个) ---
-                'weibo':     'i-weibo',   // 微博
-                'date':      'i-date',    // 约会
-                'music':     'i-music',   // 网易云
-                'game':      'i-game',    // 游戏
-                'secret':    'i-secret',  // 秘密
-                'memory':    'i-memory',  // 纪念日
-                'shop':      'i-shop',    // 杂货铺
-                'taobao':    'i-taobao',  // 淘宝
-                'gogogo':    'i-gogogo',  // GoGoGo
-                'preset':    'i-preset',  // 预设
-                'douyin':    'i-douyin',  // 抖音
-                'calendar':  'i-calendar',// 月历
-                'desire':    'i-desire'   // 欲望回廊
-            };
-
-            // 获取对应的桌面图标 ID (如果表里没有，就尝试默认的 i-xxx)
-            const targetId = iconMap[appId] || ('i-' + appId);
-            const desktopIcon = document.getElementById(targetId);
-
-            // 3. 更新桌面图标
-            if(desktopIcon) {
-                desktopIcon.style.backgroundImage = 'url(' + dataUrl + ')';
-                desktopIcon.style.backgroundSize = '100% 100%'; // 强制完整显示
-                desktopIcon.classList.add('has-img');
-                desktopIcon.innerText = ''; // 清空可能存在的文字/加号
-                
-                // 播放特效
-                if(typeof window.playEffect === 'function') window.playEffect(desktopIcon);
-            } else {
-                console.warn("⚠️ 警告：找不到桌面图标 ID [" + targetId + "]，请检查HTML");
+            const icon = document.getElementById('i-'+appId);
+            if(icon) {
+                icon.style.backgroundImage = 'url(' + dataUrl + ')';
+                icon.classList.add('has-img');
+                icon.innerHTML = '';
             }
-
-            // 4. 更新设置页里的预览图
-            // (自动寻找 input 旁边的预览小方块)
-            if(input.parentElement && input.parentElement.parentElement) {
-                const box = input.parentElement.parentElement;
-                // 尝试找 class="std-icon" 或者任何有背景图样式的 div
-                const preview = box.querySelector('.std-icon') 
-                             || box.querySelector('.setting-icon') 
-                             || box.querySelector('div[style*="background"]');
-                
-                if(preview) {
-                    preview.style.backgroundImage = 'url(' + dataUrl + ')';
-                    preview.style.backgroundSize = '100% 100%';
-                    preview.innerText = '';
-                }
-            }
-
-            alert('🍬 App图标修改成功！');
+            showUploadSuccess();
         }; 
         r.readAsDataURL(f); 
     }
 
-    
-    // 5. 🔄 刷新显示与预览 (核心：强制让预览图显示)
+    // 🟢 核心修复：画面刷新逻辑 (确保图片能显示出来)
     window.updateWallpaperPreview = function(type, dataUrl) {
-        // 🔒 1. 锁屏处理
-        if(type === 'lock' || type === 'wall') {
-            const ls = document.getElementById('lock-screen');
-            if(ls) { 
-                ls.style.backgroundImage = 'url(' + dataUrl + ')'; 
-                ls.style.backgroundSize = '100% 100%'; 
-            }
-            // 🚨 更新设置页里的预览框 (preview-lock)
-            const pre = document.getElementById('preview-lock');
-            if(pre) {
-                pre.style.backgroundImage = 'url(' + dataUrl + ')';
-                pre.style.backgroundSize = '100% 100%'; // 关键！不加这个看不见
-            }
-        } 
-        
-        // 🖼️ 2. 桌面处理
-        else if(type === 'desktop' || type === 'dwall') {
-            const pages = document.querySelectorAll('.desktop-page');
-            pages.forEach(page => {
-                page.style.backgroundImage = 'url(' + dataUrl + ')';
-                page.style.backgroundSize = '100% 100%';
-            });
-            // 🚨 更新设置页里的预览框 (preview-desktop)
-            const pre = document.getElementById('preview-desktop');
-            if(pre) {
-                pre.style.backgroundImage = 'url(' + dataUrl + ')';
-                pre.style.backgroundSize = '100% 100%'; // 关键！
-            }
-        } 
-        
-        // 🧩 3. 其他组件处理
-        else {
-            const map = {
-                'avL': 'avL', 'avR': 'avR', 'pwall': 'i-p-wall',
-                'p2bg': 'p2bg', 'p2av': 'p2av', 'p2memo': 'p2memo'
-            };
-            const id = map[type] || type;
-            const el = document.getElementById(id);
-            if (el) {
-                el.style.backgroundImage = 'url(' + dataUrl + ')';
-                el.style.backgroundSize = '100% 100%'; // 强制完整显示
-                if(el.innerText.includes('+')) el.innerHTML = '';
-            }
-        }
+    const settings = getAppSettings();
+
+    // --- 1. 壁纸逻辑修复：锁屏独立，桌面1&2合并 ---
+    if(type === 'wall' || type === 'lph') {
+        // 仅修改全局锁屏背景
+        document.getElementById('global-wall').style.backgroundImage = 'url(' + dataUrl + ')';
+        settings.theme.lockWallpaper = dataUrl;
+    } 
+    else if(type === 'desktop1' || type === 'desktop2') {
+        // 桌面1和桌面2强制同步使用同一张壁纸
+        const d1 = document.querySelector('.desktop-page:first-child');
+        const d2 = document.querySelector('.desktop-page:nth-child(2)');
+        if(d1) d1.style.backgroundImage = 'url(' + dataUrl + ')';
+        if(d2) d2.style.backgroundImage = 'url(' + dataUrl + ')';
+
+        // 数据保存也要双份同步
+        settings.theme.desktopWallpaper = dataUrl;
+        settings.theme.desktopWallpaper2 = dataUrl;
+    }
+
+    // --- 2. 其他所有组件逻辑（头像、相框、背景）---
+    // 这里包含了你代码里所有的 UI 元素 ID
+    const componentMap = {
+        'avL': 'avL',         // 桌面1左头像
+        'avR': 'avR',         // 桌面1右头像
+        'pwall': 'i-p-wall',  // 桌面1猫耳朵相框
+        'p2bg': 'p2bg',       // 桌面2顶部背景
+        'p2av': 'p2av',       // 桌面2头像
+        'p2memo': 'p2memo'    // 桌面2小方框
     };
 
-   
-    /* =================================================================
-       ⏰ 4. 时钟逻辑
-       ================================================================= */
+    if (componentMap[type]) {
+        const targetId = componentMap[type];
+        const el = document.getElementById(targetId);
+        if (el) {
+            el.style.backgroundImage = 'url(' + dataUrl + ')';
+            el.style.backgroundSize = 'cover';
+            el.style.backgroundPosition = 'center';
+            // 如果里面有 "+" 号，把它清空
+            if(el.innerText.trim() === '+' || el.innerHTML.includes('+')) {
+                el.innerHTML = '';
+            }
+        }
+        // 同步保存到本地缓存
+        localStorage.setItem('u_' + type, dataUrl);
+    }
+
+    // --- 3. 保存全局配置 ---
+    saveAppSettings(settings);
+
+    // 提示一下小宝宝
+    console.log('组件 ' + type + ' 已更新并保存成功！✨');
+};
+
+
+    // ⏰ 时钟逻辑 (放在这里确保不丢失)
     function up(){
         const n=new Date(); 
         const t=n.getHours().toString().padStart(2,'0')+":"+n.getMinutes().toString().padStart(2,'0');
+
         const lTime = document.getElementById('l-time');
         const dTime = document.getElementById('d-time');
         if(lTime) lTime.innerText = t;
         if(dTime) dTime.innerText = t;
+
+        const opt={month:'long',day:'numeric',weekday:'long'}; 
         const lDate = document.getElementById('l-date');
-        if(lDate) lDate.innerText=n.toLocaleDateString('zh-CN',{month:'long',day:'numeric',weekday:'long'});
+        if(lDate) lDate.innerText=n.toLocaleDateString('zh-CN',opt);
+
+        const s=n.getSeconds()*6, m=n.getMinutes()*6, h=n.getHours()%12*30+m/12;
+        const hs = document.getElementById('h-s');
+        const hm = document.getElementById('h-m');
+        const hh = document.getElementById('h-h');
+
+        if(hs) hs.style.transform = "rotate(" + s + "deg)";
+        if(hm) hm.style.transform = "rotate(" + m + "deg)";
+        if(hh) hh.style.transform = "rotate(" + h + "deg)";
     }
     setInterval(up, 1000); 
     up();
 
-    /* =================================================================
-       📱 5. 应用管理 (包含被找回的设置应用逻辑！)
-       ================================================================= */
+
+
+    // 3. 桌面滑动
+    sw.addEventListener('touchstart', e=>sX=e.touches[0].clientX);
+    sw.addEventListener('touchend', e=>{ 
+        const d=e.changedTouches[0].clientX-sX; 
+        if(Math.abs(d)>60) {
+            box.classList.toggle('page-1', d>0); 
+            box.classList.toggle('page-2', d<0); 
+        }
+    });
+
+    // 4. 应用管理
+    let currentApp = null;
+    let settingsHistory = []; // 用于记录设置页面的浏览历史
+
+    // 应用配置
     const apps = {
-        'weibo': { name: '微博', icon: '📱', desc: '社交' },
-        'date': { name: '约会', icon: '❤️', desc: '提醒' },
-        'music': { name: '网易云', icon: '🎵', desc: '音乐' },
-        'game': { name: '游戏', icon: '🎮', desc: '游戏' },
-        'secret': { name: '秘密', icon: '🔒', desc: '私密' },
-        'memory': { name: '纪念日', icon: '🗓️', desc: '纪念日' },
-        'shop': { name: '解忧杂货铺', icon: '🏠', desc: '购物' },
-        'taobao': { name: '淘宝闪购', icon: '🛍️', desc: '购物' },
-        'gogogo': { name: 'GoGoGo', icon: '📍', desc: '线下' },
-        'preset': { name: '预设', icon: '⚙️', desc: '系统' },
-        'douyin': { name: '抖音', icon: '🎵', desc: '视频' },
-        'calendar': { name: '小狗月历', icon: '📅', desc: '记录' },
-        'desire': { name: '欲望回廊', icon: '♾️', desc: '特殊' },
-        'wechat': { name: '微信', icon: '💬', desc: '通讯' },
-        'bottle': { name: '漂流瓶', icon: '🍼', desc: '漂流' },
-        'worldbook': { name: '世界书', icon: '📚', desc: '知识' },
-        'settings': { name: '设置', icon: '⚙️', desc: '系统' }
+        // 桌面第一页
+        'weibo': { name: '微博', icon: '📱', desc: '微博社交应用' },
+        'date': { name: '约会', icon: '❤️', desc: '约会提醒应用' },
+        'music': { name: '网易云', icon: '🎵', desc: '音乐播放应用' },
+        'game': { name: '游戏', icon: '🎮', desc: '游戏中心' },
+
+        // 桌面第二页
+        'secret': { name: '秘密', icon: '🔒', desc: '私密空间' },
+        'memory': { name: '纪念日', icon: '🗓️', desc: '纪念日提醒' },
+        'shop': { name: '解忧杂货铺', icon: '🏠', desc: '购物应用' },
+        'taobao': { name: '淘宝闪购', icon: '🛍️', desc: '购物应用' },
+        'gogogo': { name: 'GoGoGo', icon: '📍', desc: '线下模式' },
+        'preset': { name: '预设', icon: '⚙️', desc: '系统预设' },
+        'douyin': { name: '抖音', icon: '🎵', desc: '短视频应用' },
+        'calendar': { name: '小狗月历', icon: '📅', desc: '生理期记录' },
+        'desire': { name: '欲望回廊', icon: '♾️', desc: '特殊应用' },
+
+        // 底部状态栏
+        'wechat': { name: '微信', icon: '💬', desc: '即时通讯' },
+        'bottle': { name: '漂流瓶', icon: '🍼', desc: '漂流瓶应用' },
+        'worldbook': { name: '世界书', icon: '📚', desc: '知识库应用' },
+        'settings': { name: '设置', icon: '⚙️', desc: '系统设置' },
+
+        // 微信内应用
+        'moments': { name: '朋友圈', icon: '🧭', desc: '社交动态' },
+        'profile': { name: '我的', icon: '🙂', desc: '个人资料' }
     };
 
+    // 打开应用
     window.openApp = function(appId) {
-        // 播放音效和动画
-        const iconMap = {'wechat':'dch','settings':'dst','bottle':'dbo','worldbook':'dbk'};
-        const iconEl = document.getElementById(iconMap[appId] || ('i-'+appId));
-        if(iconEl) playEffect(iconEl);
+        console.log('打开应用:', appId, apps[appId]);
 
-        console.log('打开应用:', appId);
+        // 隐藏所有应用
+        document.querySelectorAll('.app-container, .wc-app, .settings-app').forEach(app => {
+            app.classList.remove('active');
+        });
 
-        // 隐藏所有
-        document.querySelectorAll('.app-container, .wc-app, .settings-app').forEach(app => app.classList.remove('active'));
+        // 更新当前应用
+        currentApp = appId;
 
+        // 特殊处理微信和设置应用
         if(appId === 'wechat') {
             document.getElementById('wc-app').classList.add('active');
-            try { if(typeof wcRenderChats === 'function') wcRenderChats(); } catch(e){}
-        } 
-        else if(appId === 'settings') {
-            // 🚨 这里的函数之前丢了，现在下面补回来了！
-            openSettingsApp(); 
-        } 
-        else if(appId === 'bottle') {
+            wcRenderChats();
+        } else if(appId === 'settings') {
+            openSettingsApp();
+        } else if(appId === 'bottle') {
             document.getElementById('bottle-app').classList.add('active');
-        } 
-        else if(appId === 'worldbook') {
+        } else if(appId === 'worldbook') {
             document.getElementById('worldbook-app').classList.add('active');
-        } 
-        else {
-            const genericApp = document.getElementById('generic-app');
-            if(genericApp && apps[appId]) {
-                const app = apps[appId];
+        } else {
+            // 通用应用处理
+            const app = apps[appId];
+            if(app) {
+                const genericApp = document.getElementById('generic-app');
                 document.getElementById('generic-app-title').innerText = app.name;
                 document.getElementById('generic-app-icon').innerText = app.icon;
                 document.getElementById('generic-app-name').innerText = app.name;
@@ -2681,154 +2547,162 @@ input[type="file"] { display: none; }
         }
     };
 
+    // 关闭应用
     window.closeApp = function(appId) {
-        playEffect(null); 
-        document.querySelectorAll('.app-container, .wc-app, .settings-app').forEach(el => el.classList.remove('active'));
+        console.log('关闭应用:', appId);
+
+        if(appId === 'wechat') {
+            document.getElementById('wc-app').classList.remove('active');
+        } else if(appId === 'bottle') {
+            document.getElementById('bottle-app').classList.remove('active');
+        } else if(appId === 'worldbook') {
+            document.getElementById('worldbook-app').classList.remove('active');
+        } else {
+            document.getElementById('generic-app').classList.remove('active');
+        }
+
+        currentApp = null;
     };
 
-    /* =================================================================
-       ⚙️ 6. 设置应用逻辑 (这是之前丢失的部分！补回来了！)
-       ================================================================= */
-    function openSettingsApp() {
-        const app = document.getElementById('settings-app');
-        if(app) {
-            app.classList.add('active');
-            renderSettingsPage('main'); // 渲染主菜单
-        } else {
-            alert("设置应用未找到，请检查HTML结构");
-        }
-    }
-
-    function closeSettingsApp() {
-        document.getElementById('settings-app').classList.remove('active');
-    }
-
-    // 渲染设置页面内容
-    function renderSettingsPage(page) {
-        const body = document.getElementById('sa-body');
-        if(!body) return;
-
-        // 如果HTML里已经写了静态按钮，我们就不覆盖它，只在需要动态生成时操作
-        // 这里为了保险，如果是 'main' 页面，我们保留HTML里原本写好的按钮
-        // 只有当 page 不等于 main 时，才清空重写
-        if(page === 'main') {
-            document.getElementById('settings-title').innerText = "系统设置";
-            // 恢复所有一级菜单的显示
-            const items = body.querySelectorAll('.setting-item');
-            items.forEach(item => item.style.display = 'flex');
-        }
-    }
-
-    // 返回上一级
+    // 关闭当前页面（用于设置应用） - 修复白屏问题
     window.closeCurrentPage = function() {
-        playEffect(null);
-        closeSettingsApp();
-    }
-    /* =================================================================
-       🚀 7. 最终加载 (修复：预览图不显示 + 图标不全的问题)
-       ================================================================= */
-    function load(){
-        console.log('正在初始化...');
+        console.log('关闭当前页面，历史记录:', settingsHistory);
 
-        // 1. 恢复文字 (保持不变)
+        if(settingsHistory.length > 1) {
+            // 返回上一级设置页面
+            settingsHistory.pop();
+            const lastPage = settingsHistory[settingsHistory.length - 1];
+            console.log('返回上一级:', lastPage);
+            renderSettingsPage(lastPage);
+        } else {
+            // 关闭设置应用
+            console.log('关闭设置应用');
+            closeSettingsApp();
+        }
+    };
+
+           function load(){
+        console.log('正在加载所有自定义设置...');
+
+        // ===========================
+        // 1. 恢复壁纸 (优先读取设置，其次读取旧缓存)
+        // ===========================
+        const settings = getAppSettings();
+        try {
+            const wall = settings.theme.lockWallpaper || localStorage.getItem('u_wall'); 
+            if(wall) {
+                document.getElementById('global-wall').style.backgroundImage='url('+wall+')';
+                // 恢复锁屏预览框
+                const lPre = document.getElementById('l-pre');
+                if(lPre) {
+                    lPre.innerHTML = '';
+                    lPre.style.backgroundImage = 'url(' + wall + ')';
+                    lPre.style.backgroundSize = 'cover';
+                    lPre.style.backgroundPosition = 'center';
+                }
+            }
+
+            // 恢复桌面壁纸
+            if(settings.theme.desktopWallpaper) {
+                const d1 = document.querySelector('.desktop-page:first-child');
+                if(d1) d1.style.backgroundImage = 'url(' + settings.theme.desktopWallpaper + ')';
+            }
+            if(settings.theme.desktopWallpaper2) {
+                const d2 = document.querySelector('.desktop-page:nth-child(2)');
+                if(d2) d2.style.backgroundImage = 'url(' + settings.theme.desktopWallpaper2 + ')';
+            }
+        } catch(e) { console.error('壁纸加载错误', e); }
+
+        // ===========================
+        // 2. 恢复所有自定义文字组件
+        // ===========================
+        // 列表：[DOM ID, Storage Key]
         const textComponents = [
-            ['lkp', 'u_lkp'], ['dl1', 'u_dl1'], ['dl2', 'u_dl2'], ['dl3', 'u_dl3'],
-            ['mt1', 'u_mt1'], ['mt2', 'u_mt2'], ['p1-msg1', 'u_msg1'], ['p1-msg2', 'u_msg2'],
-            ['p2bio', 'u_p2bio'], ['p2loc', 'u_p2loc']
+            ['lkp', 'u_lkp'],       // 锁屏顶部文字
+            ['dl1', 'u_dl1'],       // 桌面1 日记行1
+            ['dl2', 'u_dl2'],       // 桌面1 日记行2
+            ['dl3', 'u_dl3'],       // 桌面1 日记行3
+            ['mt1', 'u_mt1'],       // 桌面1 距离
+            ['mt2', 'u_mt2'],       // 桌面1 时间
+            ['p1-msg1', 'u_msg1'],  // 桌面1 气泡左
+            ['p1-msg2', 'u_msg2'],  // 桌面1 气泡右
+            ['p2bio', 'u_p2bio'],   // 桌面2 简介
+            ['p2loc', 'u_p2loc']    // 桌面2 地点
         ];
+
         textComponents.forEach(item => {
-            const savedText = localStorage.getItem(item[1]);
-            if(savedText && document.getElementById(item[0])) {
-                document.getElementById(item[0]).innerText = savedText;
+            const domId = item[0];
+            const storeKey = item[1];
+            const savedText = localStorage.getItem(storeKey);
+            if(savedText) {
+                const el = document.getElementById(domId);
+                if(el) el.innerText = savedText;
             }
         });
 
-        // 2. 恢复普通图片 (保持不变)
+        // ===========================
+        // 3. 恢复所有自定义图片组件
+        // ===========================
+        // 列表：[DOM ID, Storage Key]
         const imgComponents = [
-            ['avL', 'u_avL'], ['avR', 'u_avR'], ['i-p-wall', 'u_pwall'],
-            ['p2bg', 'u_p2bg'], ['p2av', 'u_p2av'], ['p2memo', 'u_p2memo']
+            ['avL', 'u_avL'],         // 桌面1 左头像
+            ['avR', 'u_avR'],         // 桌面1 右头像
+            ['i-p-wall', 'u_pwall'],  // 桌面1 猫耳朵相框
+            ['p2bg', 'u_p2bg'],       // 桌面2 顶部背景
+            ['p2av', 'u_p2av'],       // 桌面2 头像
+            ['p2memo', 'u_p2memo']    // 桌面2 小方框
         ];
+
         imgComponents.forEach(item => {
-            const savedImg = localStorage.getItem(item[1]);
-            if(savedImg && document.getElementById(item[0])) {
-                const el = document.getElementById(item[0]);
-                el.style.backgroundImage = 'url(' + savedImg + ')';
-                el.style.backgroundSize = '100% 100%';
-                el.style.backgroundPosition = 'center';
-                if(el.innerText.trim() === '+' || el.innerHTML.includes('+')) el.innerHTML = '';
-            }
-        });
-
-        // 3. 恢复壁纸 & 预览图 (🚨 这里是你之前写错位置的地方，我修好了)
-        
-        // (1) 锁屏壁纸
-        const lockWall = localStorage.getItem('u_lock_wall');
-        if(lockWall) {
-            // 恢复真实锁屏
-            if(typeof updateWallpaperPreview === 'function') updateWallpaperPreview('lock', lockWall);
-            
-            // 恢复设置页预览图
-            const preLock = document.getElementById('preview-lock');
-            if(preLock) {
-                preLock.style.backgroundImage = 'url(' + lockWall + ')';
-                preLock.style.backgroundSize = '100% 100%';
-            }
-        }
-
-        // (2) 桌面壁纸
-        const deskWall = localStorage.getItem('u_desktop_wall'); 
-        if(deskWall) {
-            // 恢复真实桌面
-            if(typeof updateWallpaperPreview === 'function') updateWallpaperPreview('desktop', deskWall);
-            
-            // 恢复设置页预览图
-            const preDesk = document.getElementById('preview-desktop');
-            if(preDesk) {
-                preDesk.style.backgroundImage = 'url(' + deskWall + ')';
-                preDesk.style.backgroundSize = '100% 100%';
-            }
-        }
-
-        // 4. 恢复图标 (🚨 增强版：防止漏掉 16 个 App)
-        // 我们遍历所有的图标定义，去 localStorage 里找有没有存过图片
-        const appList = [
-            'weibo', 'date', 'music', 'game', 'secret', 'memory', 'shop', 'taobao',
-            'gogogo', 'preset', 'douyin', 'calendar', 'desire', // 普通 App
-            'wechat', 'bottle', 'worldbook', 'settings' // 底部 Dock 栏
-        ];
-
-        appList.forEach(appId => {
-            const savedIcon = localStorage.getItem('app_icon_' + appId);
-            if(savedIcon) {
-                // 找到对应的 DOM ID
-                let targetId = 'i-' + appId;
-                if(appId === 'wechat') targetId = 'dch';
-                if(appId === 'settings') targetId = 'dst';
-                if(appId === 'bottle') targetId = 'dbo';
-                if(appId === 'worldbook') targetId = 'dbk';
-
-                const iconEl = document.getElementById(targetId);
-                if(iconEl) {
-                    iconEl.style.backgroundImage = 'url(' + savedIcon + ')';
-                    iconEl.style.backgroundSize = '100% 100%';
-                    iconEl.classList.add('has-img');
-                    iconEl.innerHTML = ''; 
+            const domId = item[0];
+            const storeKey = item[1];
+            const savedImg = localStorage.getItem(storeKey);
+            if(savedImg) {
+                const el = document.getElementById(domId);
+                if(el) {
+                    el.style.backgroundImage = 'url(' + savedImg + ')';
+                    el.style.backgroundSize = 'cover';
+                    el.style.backgroundPosition = 'center';
+                    // 如果有内容（如+号），清空它
+                    if(el.innerText.trim() === '+' || el.innerHTML.includes('+')) {
+                        el.innerHTML = '';
+                    }
                 }
             }
         });
 
-        // 5. 绑定全局动画 (保持不变)
-        const clickables = document.querySelectorAll('.std-icon, .short-frame, .gb-shell-long, .music-av-simple, .home-btn-area, .sharp-bubble, .diary-line, .p2-header-clean, .dashed-diary, .l-glass, .dock-bar .std-icon, .setting-item, .wc-tab, .wall-preview-box');
-        clickables.forEach(el => {
-            el.removeEventListener('click', handleEffect); 
-            el.addEventListener('click', handleEffect);
+        // ===========================
+        // 4. 恢复应用图标 & 微信数据
+        // ===========================
+        Object.keys(apps).forEach(appId => {
+            const icon = document.getElementById('i-' + appId);
+            if(icon) {
+                const savedIcon = localStorage.getItem('app_icon_' + appId);
+                if(savedIcon) {
+                    icon.style.backgroundImage = 'url(' + savedIcon + ')';
+                    icon.classList.add('has-img');
+                    icon.innerHTML = '';
+                } else {
+                    icon.innerHTML = apps[appId].icon;
+                }
+            }
         });
 
         try { 
-            if(typeof wcRenderChats === 'function') wcRenderChats(); 
+            wcRenderChats(); 
+            wcRenderContacts(); 
         } catch(e){}
     }
 
+
+
+    window.gameAnim = function(){ 
+        const s=document.getElementById('gs'); 
+        s.innerHTML="LOADING...<br>副本生成中"; 
+        setTimeout(()=>{
+            s.innerHTML="READY!<br>欢迎来到回廊";
+        },1500); 
+    }
 
     /* ============================
    💚 WeChat Logic (2026 完整终极版)
