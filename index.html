@@ -2361,94 +2361,82 @@ input[type="file"] { display: none; }
     }
 
     // 🟢 核心修复：应用图标上传
-        // 🟢 核心修复：应用图标上传 (修复底部栏图标无法更换的问题)
-    window.hIcon = function(appId){ 
-        const input = document.getElementById('f-icon-'+appId);
-        if(!input || !input.files || !input.files[0]) return;
+    // 🟢 核心修复：应用图标上传 (同步更新桌面 + 设置预览)
+window.hIcon = function(appId){ 
+    const input = document.getElementById('f-icon-'+appId);
+    if(!input || !input.files || !input.files[0]) return;
 
-        const f = input.files[0]; 
-        const r = new FileReader(); 
-        r.onload = (e)=>{
-            const dataUrl = e.target.result;
-            localStorage.setItem('app_icon_'+appId, dataUrl); 
+    const f = input.files[0]; 
+    const r = new FileReader(); 
+    r.onload = (e)=>{
+        const dataUrl = e.target.result;
+        localStorage.setItem('app_icon_'+appId, dataUrl); 
 
-            // 1. 修正ID映射 (这是之前漏掉的！)
-            let targetId = 'i-' + appId;
-            if(appId === 'wechat') targetId = 'dch';
-            if(appId === 'settings') targetId = 'dst';
-            if(appId === 'bottle') targetId = 'dbo';
-            if(appId === 'worldbook') targetId = 'dbk';
+        // 1. 更新桌面上的图标
+        const icon = document.getElementById('i-'+appId);
+        if(icon) {
+            icon.style.backgroundImage = 'url(' + dataUrl + ')';
+            icon.classList.add('has-img'); icon.innerHTML = '';
+        }
 
-            const icon = document.getElementById(targetId);
-            if(icon) {
-                icon.style.backgroundImage = 'url(' + dataUrl + ')';
-                icon.style.backgroundSize = '100% 100%'; // 强制完整显示
-                icon.classList.add('has-img');
-                icon.innerHTML = '';
-            }
-            
-            // 如果你有定义提示函数就调用，没有就默认alert
-            if(typeof showUploadSuccess === 'function') showUploadSuccess();
-            else alert('✅ 图标修改成功');
-        }; 
-        r.readAsDataURL(f); 
+        // 2. ⚡️ 核心：同时更新设置页面里的预览图标
+        const preIcon = document.getElementById('pre-i-'+appId);
+        if(preIcon) {
+            preIcon.style.backgroundImage = 'url(' + dataUrl + ')';
+            preIcon.classList.add('has-img'); preIcon.innerHTML = '';
+        }
+
+        if(window.showUploadSuccess) showUploadSuccess();
+        else alert('✨ 图标更换成功');
+    }; 
+    r.readAsDataURL(f); 
+}
+
+  // 🟢 核心修复：画面刷新逻辑 (壁纸同步 + 预览框)
+window.updateWallpaperPreview = function(type, dataUrl) {
+    const settings = getAppSettings();
+
+    // --- 1. 锁屏壁纸 ---
+    if(type === 'wall' || type === 'lph' || type === 'lock') {
+        document.getElementById('global-wall').style.backgroundImage = 'url(' + dataUrl + ')';
+        // 更新设置页锁屏预览 (兼容不同ID)
+        const lp = document.getElementById('preview-lock') || document.getElementById('l-pre');
+        if(lp) lp.style.backgroundImage = 'url(' + dataUrl + ')';
+        settings.theme.lockWallpaper = dataUrl;
+        localStorage.setItem('u_wall', dataUrl);
+    } 
+    // --- 2. 桌面壁纸 (1和2强制同步) ---
+    else if(type === 'desktop' || type === 'desktop1' || type === 'desktop2' || type === 'dwall') {
+        // 找到所有桌面页 (.desktop-page)，一起换图
+        document.querySelectorAll('.desktop-page').forEach(p => {
+            p.style.backgroundImage = 'url(' + dataUrl + ')';
+        });
+        // 更新设置页桌面预览 (兼容不同ID)
+        const dp = document.getElementById('preview-desktop') || document.getElementById('d-pre');
+        if(dp) dp.style.backgroundImage = 'url(' + dataUrl + ')';
+        
+        settings.theme.desktopWallpaper = dataUrl;
+        settings.theme.desktopWallpaper2 = dataUrl;
+        localStorage.setItem('u_desktop', dataUrl);
     }
 
-        // 🟢 核心修复：画面刷新逻辑 (修复图片放大问题 + 预览同步)
-    window.updateWallpaperPreview = function(type, dataUrl) {
-        const settings = getAppSettings();
-
-        // 1. 锁屏壁纸
-        if(type === 'wall' || type === 'lph' || type === 'lock') {
-            const gw = document.getElementById('global-wall');
-            if(gw) {
-                gw.style.backgroundImage = 'url(' + dataUrl + ')';
-                gw.style.backgroundSize = '100% 100%'; // 修复放大
-            }
-            settings.theme.lockWallpaper = dataUrl;
-            
-            // 同步更新预览框(如果有)
-            const pre = document.getElementById('preview-lock');
-            if(pre) { pre.style.backgroundImage='url('+dataUrl+')'; pre.style.backgroundSize='100% 100%'; }
-        } 
-        // 2. 桌面壁纸 (1和2同步)
-        else if(type === 'desktop' || type === 'desktop1' || type === 'desktop2' || type === 'dwall') {
-            document.querySelectorAll('.desktop-page').forEach(p => {
-                p.style.backgroundImage = 'url(' + dataUrl + ')';
-                p.style.backgroundSize = '100% 100%'; // 修复放大
-            });
-            settings.theme.desktopWallpaper = dataUrl;
-            settings.theme.desktopWallpaper2 = dataUrl;
-
-            // 同步更新预览框(如果有)
-            const pre = document.getElementById('preview-desktop');
-            if(pre) { pre.style.backgroundImage='url('+dataUrl+')'; pre.style.backgroundSize='100% 100%'; }
-        }
-        // 3. 其他组件 (头像、相框等)
-        else {
-            const componentMap = {
-                'avL': 'avL', 'avR': 'avR', 'pwall': 'i-p-wall',
-                'p2bg': 'p2bg', 'p2av': 'p2av', 'p2memo': 'p2memo'
-            };
-
-            const targetId = componentMap[type] || type;
-            const el = document.getElementById(targetId);
-            if (el) {
-                el.style.backgroundImage = 'url(' + dataUrl + ')';
-                el.style.backgroundSize = '100% 100%'; // 修复放大
-                el.style.backgroundPosition = 'center';
-                if(el.innerText.trim() === '+' || el.innerHTML.includes('+')) el.innerHTML = '';
-            }
-            localStorage.setItem('u_' + type, dataUrl);
-        }
-
-        saveAppSettings(settings);
+    // --- 3. 其他组件 (头像、相框等) ---
+    const componentMap = {
+        'avL': 'avL', 'avR': 'avR', 'pwall': 'i-p-wall',
+        'p2bg': 'p2bg', 'p2av': 'p2av', 'p2memo': 'p2memo'
     };
+    const targetId = componentMap[type] || type;
+    const el = document.getElementById(targetId);
+    if (el) {
+        el.style.backgroundImage = 'url(' + dataUrl + ')';
+        el.style.backgroundSize = 'cover';
+        if(el.innerText.includes('+')) el.innerHTML = '';
+        localStorage.setItem('u_' + type, dataUrl);
+    }
 
-    // 提示一下小宝宝
-    console.log('组件 ' + type + ' 已更新并保存成功！✨');
+    saveAppSettings(settings);
+    console.log('✨ ' + type + ' 已同步更新');
 };
-
 
     // ⏰ 时钟逻辑 (放在这里确保不丢失)
     function up(){
@@ -2592,76 +2580,41 @@ input[type="file"] { display: none; }
         }
     };
 
-               function load(){
-        console.log('正在加载所有自定义设置...');
+           function load(){
+    const settings = getAppSettings();
+    
+    // 1. 恢复壁纸
+    const wall = settings.theme.lockWallpaper || localStorage.getItem('u_wall');
+    if(wall) window.updateWallpaperPreview('lock', wall);
+    
+    const dWall = settings.theme.desktopWallpaper || localStorage.getItem('u_desktop');
+    if(dWall) window.updateWallpaperPreview('desktop', dWall);
 
-        // 1. 恢复壁纸 (增加 updateWallpaperPreview 调用确保同步)
-        const settings = getAppSettings();
-        try {
-            const wall = settings.theme.lockWallpaper || localStorage.getItem('u_lock_wall') || localStorage.getItem('u_wall'); 
-            if(wall && window.updateWallpaperPreview) window.updateWallpaperPreview('lock', wall);
-
-            const dWall = settings.theme.desktopWallpaper || localStorage.getItem('u_desktop_wall');
-            if(dWall && window.updateWallpaperPreview) window.updateWallpaperPreview('desktop', dWall);
-        } catch(e) { console.error('壁纸加载错误', e); }
-
-        // 2. 恢复文字 (保持原样)
-        const textComponents = [
-            ['lkp', 'u_lkp'], ['dl1', 'u_dl1'], ['dl2', 'u_dl2'], ['dl3', 'u_dl3'],
-            ['mt1', 'u_mt1'], ['mt2', 'u_mt2'], ['p1-msg1', 'u_msg1'], ['p1-msg2', 'u_msg2'],
-            ['p2bio', 'u_p2bio'], ['p2loc', 'u_p2loc']
-        ];
-        textComponents.forEach(item => {
-            const savedText = localStorage.getItem(item[1]);
-            if(savedText && document.getElementById(item[0])) document.getElementById(item[0]).innerText = savedText;
-        });
-
-        // 3. 恢复图片 (修复ID对应)
-        const imgComponents = [
-            ['avL', 'u_avL'], ['avR', 'u_avR'], ['i-p-wall', 'u_pwall'],
-            ['p2bg', 'u_p2bg'], ['p2av', 'u_p2av'], ['p2memo', 'u_p2memo']
-        ];
-        imgComponents.forEach(item => {
-            const savedImg = localStorage.getItem(item[1]);
-            if(savedImg && document.getElementById(item[0])) {
-                const el = document.getElementById(item[0]);
-                el.style.backgroundImage = 'url(' + savedImg + ')';
-                el.style.backgroundSize = '100% 100%';
-                if(el.innerText.includes('+')) el.innerHTML = '';
-            }
-        });
-
-        // 4. 恢复应用图标 (❌ 核心修复：防止刷新后图标消失)
-        if(typeof apps !== 'undefined') {
-            Object.keys(apps).forEach(appId => {
-                // 必须做ID映射
-                let targetId = 'i-' + appId;
-                if(appId === 'wechat') targetId = 'dch';
-                if(appId === 'settings') targetId = 'dst';
-                if(appId === 'bottle') targetId = 'dbo';
-                if(appId === 'worldbook') targetId = 'dbk';
-
-                const icon = document.getElementById(targetId);
-                if(icon) {
-                    const savedIcon = localStorage.getItem('app_icon_' + appId);
-                    if(savedIcon) {
-                        icon.style.backgroundImage = 'url(' + savedIcon + ')';
-                        icon.style.backgroundSize = '100% 100%';
-                        icon.classList.add('has-img');
-                        icon.innerHTML = '';
-                    } else {
-                        // 没图就显示默认emoji
-                        if(!icon.classList.contains('has-img')) icon.innerHTML = apps[appId].icon;
-                    }
-                }
-            });
+    // 2. 恢复应用图标 (包括桌面和设置预览)
+    Object.keys(apps).forEach(appId => {
+        const savedIcon = localStorage.getItem('app_icon_' + appId);
+        if(savedIcon) {
+            // 更新桌面
+            const icon = document.getElementById('i-' + appId);
+            if(icon) { icon.style.backgroundImage = 'url('+savedIcon+')'; icon.innerHTML = ''; icon.classList.add('has-img'); }
+            // 更新设置预览
+            const preIcon = document.getElementById('pre-i-' + appId);
+            if(preIcon) { preIcon.style.backgroundImage = 'url('+savedIcon+')'; preIcon.innerHTML = ''; preIcon.classList.add('has-img'); }
         }
+    });
 
-        try { 
-            if(window.wcRenderChats) wcRenderChats(); 
-            if(window.wcRenderContacts) wcRenderContacts(); 
-        } catch(e){}
-    }
+    // 3. 恢复文字组件 (保持你原有的逻辑即可)
+    const textComponents = [['lkp','u_lkp'],['dl1','u_dl1'],['dl2','u_dl2'],['dl3','u_dl3'],['mt1','u_mt1'],['mt2','u_mt2'],['p1-msg1','u_msg1'],['p1-msg2','u_msg2'],['p2bio','u_p2bio'],['p2loc','u_p2loc']];
+    textComponents.forEach(item => {
+        const el = document.getElementById(item[0]);
+        const txt = localStorage.getItem(item[1]);
+        if(el && txt) el.innerText = txt;
+    });
+
+    try { wcRenderChats(); wcRenderContacts(); } catch(e){}
+}
+
+
 
     window.gameAnim = function(){ 
         const s=document.getElementById('gs'); 
