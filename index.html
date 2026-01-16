@@ -2444,84 +2444,49 @@ function goToPage(pageNum) {
     }
 }
 /* =============================================
-   五、桌面图片上传与预览保存逻辑 (超强压缩版)
+   五、桌面图片上传与预览保存逻辑
    ============================================= */
-let hiddenPicker = document.getElementById('hidden-file-picker');
-if (!hiddenPicker) {
-    hiddenPicker = document.createElement('input');
-    hiddenPicker.id = 'hidden-file-picker';
-    hiddenPicker.type = 'file';
-    hiddenPicker.accept = 'image/*';
-    hiddenPicker.style.display = 'none';
-    document.body.appendChild(hiddenPicker);
-}
+// 1. 创建一个全局隐藏的文件输入框
+const hiddenPicker = document.createElement('input');
+hiddenPicker.type = 'file';
+hiddenPicker.accept = 'image/*';
+hiddenPicker.style.display = 'none';
+document.body.appendChild(hiddenPicker);
 
 let activeImgTarget = '';
 
+// 2. 图片选择触发函数 (对应 HTML 中的 pick('xxx'))
 function pick(targetId) {
     if (window.event) window.event.stopPropagation();
-    // 自动清洗 ID
-    activeImgTarget = targetId.replace('f-', ''); 
-    hiddenPicker.click();
+    activeImgTarget = targetId; // 记录当前点击的是哪个组件
+    hiddenPicker.click();       // 模拟点击文件上传
 }
 
+// 3. 处理文件读取与保存
 hiddenPicker.onchange = function(e) {
     const file = e.target.files[0];
     if (file) {
         const reader = new FileReader();
         reader.onload = function(event) {
-            const img = new Image();
-            img.src = event.target.result;
-            img.onload = function() {
-                // --- 超强压缩逻辑 ---
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
+            const base64Data = event.target.result;
+            // 找到对应的显示元素 (去掉 ID 前缀 'f-')
+            const displayId = activeImgTarget.replace('f-', '');
+            const el = document.getElementById(displayId);
+            
+            if (el) {
+                // 更新 UI 样式
+                el.style.backgroundImage = `url(${base64Data})`;
+                el.style.backgroundSize = 'cover';
+                el.style.backgroundPosition = 'center';
+                // 如果是相框等带文字的，清除内部文字
+                if (el.innerText === '+') el.innerText = '';
                 
-                // 🚨 关键修改：把尺寸限制在 150px (小组件专属)
-                // 150px 在手机屏幕上做图标和相框已经非常清晰了
-                const maxDim = 150; 
-                let w = img.width;
-                let h = img.height;
-                
-                if (w > h) {
-                    if (w > maxDim) { h *= maxDim / w; w = maxDim; }
-                } else {
-                    if (h > maxDim) { w *= maxDim / h; h = maxDim; }
-                }
-                
-                canvas.width = w;
-                canvas.height = h;
-                ctx.drawImage(img, 0, 0, w, h);
-                
-                // 压缩为 JPEG, 质量 0.6
-                const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
-                
-                // --- 显示与保存 ---
-                const el = document.getElementById(activeImgTarget);
-                if (el) {
-                    // 1. 更新视图
-                    el.style.backgroundImage = `url(${compressedBase64})`;
-                    el.style.backgroundSize = 'cover';
-                    el.style.backgroundPosition = 'center';
-                    if (el.innerText === '+') el.innerText = '';
-                    
-                    // 2. 保存数据
-                    try {
-                        localStorage.setItem('img_save_' + activeImgTarget, compressedBase64);
-                        console.log(`✅ 保存成功: ${activeImgTarget} (体积: ${(compressedBase64.length/1024).toFixed(1)}KB)`);
-                    } catch (err) {
-                        alert("⚠️ 内存还是满了！请联系开发者做深度清理。");
-                        console.error(err);
-                    }
-                } else {
-                    alert("找不到组件ID: " + activeImgTarget);
-                }
-            };
+                // 保存到本地存储
+                localStorage.setItem('img_save_' + displayId, base64Data);
+            }
         };
         reader.readAsDataURL(file);
     }
-    // 允许重复上传同一张
-    e.target.value = ''; 
 };
 /* =============================================
    六、桌面文字修改与持久化记忆
