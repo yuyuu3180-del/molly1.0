@@ -370,12 +370,43 @@ input[type="file"] { display: none; }
 .c-av-small { width: 38px; height: 38px; border-radius: 4px; background: #eee; background-size: cover; margin-right: 12px; }
 .c-name-text { font-size: 16px; font-weight: 500; }
 
-/* 底部 Tab */
-.wc-footer { height: 80px; background: #f7f7f7; display: flex; justify-content: space-around; padding-top: 8px; border-top: 1px solid #dcdcdc; z-index: 5001; }
-.wc-tab { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #111; cursor: pointer; }
-.wc-tab.active { color: #07c160; }
-.wc-tab-icon { font-size: 24px; display:flex; align-items:center; justify-content:center; }
-.wc-tab-txt { font-size: 10px; font-weight: 500; }
+/* ====================================
+   🟢 底部导航栏精修 (对齐+小字体)
+   ==================================== */
+.wc-footer {
+    position: absolute !important; bottom: 0 !important; left: 0 !important; width: 100% !important;
+    height: 60px; /* 高度稍微减小一点，更精致 */
+    background: #f7f7f7;
+    border-top: 1px solid #dcdcdc;
+    display: flex; justify-content: space-around; align-items: center; /* 垂直居中 */
+    padding-bottom: 0; /* 去掉多余内边距 */
+    z-index: 6000;
+}
+
+.wc-tab {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px; /* 图标和文字挨紧一点 */
+    height: 100%; width: 60px;
+    color: #111; cursor: pointer; transition: 0.2s;
+}
+
+.wc-tab-icon {
+    font-size: 22px; /* 图标稍微调小 */
+    height: 24px; width: 24px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 2px;
+}
+
+.wc-tab-txt {
+    font-size: 10px; /* 字体调小 */
+    font-weight: 500;
+    transform: scale(0.9); /* 视觉上更精致 */
+    color: #111;
+}
+
+/* 激活状态 */
+.wc-tab.active .wc-tab-txt { color: #07c160; }
+.wc-tab.active .wc-tab-icon { color: #07c160; }
 
 /* 模态框 */
 .wc-popover { position: absolute; top: 60px; right: 10px; width: 140px; background: #4c4c4c; border-radius: 6px; z-index: 6000; display: none; flex-direction: column; padding: 5px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
@@ -1652,8 +1683,196 @@ input[type="file"] { display: none; }
     box-shadow: none;
 }
 #wc-receive-modal .tm-btn:active { background: #06ad56; }
+/* ====================================
+   🟢 微信新增页面样式 (定制版)
+   ==================================== */
 
-  </style>
+/* 1. 列表容器 */
+#wc-discover-list, #wc-me-list {
+    position: absolute; top: 0; left: 0; 
+    width: 100%; height: 100%; 
+    overflow-y: auto; 
+    background: #ededed;
+    /* JS 控制显示/隐藏 */
+}
+
+/* 2. 我的页面 - 头部 */
+.me-header {
+    background: #fff;
+    padding: 30px 20px 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    /* 去掉了下边距，用外面的分隔条控制 */
+}
+.me-av-box {
+    width: 64px; height: 64px;
+    border-radius: 8px;
+    background: #eee;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    border: 1px solid #f0f0f0;
+}
+.me-info-box {
+    flex: 1;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+.me-nickname {
+    font-size: 20px; font-weight: 600; color: #000;
+    cursor: pointer;
+}
+.me-wxid {
+    font-size: 14px; color: #777; margin-bottom: 4px;
+}
+/* 状态胶囊样式 */
+.me-status-pill {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 11px;
+    color: #555;
+    width: fit-content;
+    background: #fff;
+    cursor: pointer;
+}
+/* ====================================
+   🟢 微信新增页面样式 (发现/我/朋友圈) - 补丁包
+   ==================================== */
+
+/* 1. 列表容器 (默认隐藏) */
+#wc-discover-list, #wc-me-list {
+    position: absolute; top: 0; left: 0; 
+    width: 100%; height: 100%; 
+    overflow-y: auto; 
+    background: #ededed;
+    display: none; /* 🚨 关键：默认必须隐藏！ */
+}
+
+/* 2. 我的页面 - 头部 */
+.me-header {
+    background: #fff;
+    padding: 30px 20px 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.me-av-box {
+    width: 64px; height: 64px;
+    border-radius: 8px;
+    background: #eee;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    border: 1px solid #f0f0f0;
+}
+.me-info-box {
+    flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 4px;
+}
+.me-nickname { font-size: 20px; font-weight: 600; color: #000; cursor: pointer; }
+.me-wxid { font-size: 14px; color: #777; margin-bottom: 4px; }
+.me-status-pill {
+    display: inline-flex; align-items: center; border: 1px solid #ddd;
+    border-radius: 12px; padding: 2px 8px; font-size: 11px; color: #555;
+    width: fit-content; background: #fff; cursor: pointer;
+}
+
+/* 3. 朋友圈独立弹窗 (层级极高，覆盖整个微信) */
+#wc-moments-page {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #fff;
+    z-index: 6000; /* 比聊天列表高 */
+    display: none; /* 🚨 关键：默认隐藏！ */
+    flex-direction: column;
+}
+#wc-moments-page.active {
+    display: flex; /* 激活时才显示 */
+    animation: slideInR 0.25s ease-out;
+}
+
+/* 朋友圈导航栏 (透明浮动) */
+.moments-nav {
+    position: absolute; top: 0; left: 0; width: 100%;
+    height: 80px; /* 避开灵动岛 */
+    display: flex; align-items: flex-end;
+    padding: 10px 15px;
+    z-index: 10;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent); 
+}
+.m-nav-btn {
+    font-size: 20px; color: #fff; cursor: pointer;
+    font-weight: bold; width: 40px;
+}
+
+/* 朋友圈滚动区 */
+.moments-scroll {
+    flex: 1; overflow-y: auto; overflow-x: hidden;
+    padding-bottom: 50px;
+    background: #fff;
+}
+
+/* 封面区 */
+.moments-cover-area {
+    position: relative; width: 100%; height: 320px; margin-bottom: 30px;
+}
+.m-cover {
+    width: 100%; height: 100%; background: #555;
+    background-size: cover; background-position: center; cursor: pointer;
+}
+.m-user-line {
+    position: absolute; bottom: -20px; right: 20px;
+    display: flex; align-items: center; gap: 15px;
+}
+.m-username {
+    color: #fff; font-size: 18px; font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4); margin-bottom: 15px;
+}
+.m-user-av {
+    width: 70px; height: 70px; border-radius: 8px; background: #eee;
+    border: 2px solid #fff; background-size: cover; background-position: center;
+    cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* 朋友圈内容流 */
+.moments-stream { padding: 0; }
+.m-item {
+    display: flex; padding: 15px 15px 10px 15px;
+    border-bottom: 1px solid #f2f2f2; gap: 12px;
+}
+.m-left-av {
+    width: 42px; height: 42px; border-radius: 6px; background: #ccc; flex-shrink: 0;
+}
+.m-right-content {
+    flex: 1; display: flex; flex-direction: column; gap: 6px;
+}
+.m-r-name { font-size: 16px; font-weight: 600; color: #576b95; }
+.m-r-text { font-size: 15px; color: #222; line-height: 1.5; }
+.m-img-grid { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+.m-pic {
+    width: 90px; height: 90px; background: #eee;
+    background-size: cover; background-position: center;
+}
+.m-r-time {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: #999; margin-top: 5px;
+}
+.m-r-action {
+    background: #f7f7f7; padding: 0 6px; border-radius: 4px; color: #576b95;
+    font-weight: bold; cursor: pointer;
+}
+.m-comments {
+    background: #f7f7f7; border-radius: 4px; margin-top: 8px;
+    padding: 6px 10px; font-size: 13px; color: #333;
+}
+.m-c-like { color: #576b95; font-weight: 500; margin-bottom: 4px; }
+.m-c-name { color: #576b95; font-weight: 500; }
+  
+ </style>
 </head>
 <body>
     <div class="iphone locked page-1" id="box">
@@ -1814,7 +2033,7 @@ input[type="file"] { display: none; }
             <span id="wc-back-arrow" style="font-weight:bold; margin-right:5px">&lt;</span>
             <span id="wc-h-txt">消息</span>
         </div>
-        <div class="wc-h-right" id="wc-plus-btn" onclick="window.wcToggleMenu()">+</div>
+        <div class="wc-h-right" id="wc-plus-btn" onclick="window.wcToggleMenu(event)">+</div>
     </div>
 
     <div class="wc-popover" id="wc-menu">
@@ -1825,24 +2044,184 @@ input[type="file"] { display: none; }
     <div class="wc-body">
         <div id="wc-chat-list"></div>
         <div id="wc-contact-list"></div>
+        
+        <div id="wc-discover-list" style="display:none;">
+    <div class="wc-list-item" onclick="document.getElementById('wc-moments-page').classList.add('active')">
+        <div class="wc-avatar" style="background: #fff; border: 1px solid #eee; border-radius: 4px;"></div> <div class="wc-info"><div class="wc-name">朋友圈</div></div>
+        <div style="color:#ccc; font-size:18px;">&gt;</div>
     </div>
+    
+    <div style="height:10px; background:#f5f5f5;"></div>
+
+    <div class="wc-list-item" onclick="alert('刮刮乐功能开发中...')">
+        <div class="wc-avatar" style="background: #fff; border: 1px solid #eee; border-radius: 4px;"></div>
+        <div class="wc-info"><div class="wc-name">刮刮乐</div></div>
+        <div style="color:#ccc; font-size:18px;">&gt;</div>
+    </div>
+
+    <div class="wc-list-item" onclick="alert('心情日记功能开发中...')">
+        <div class="wc-avatar" style="background: #fff; border: 1px solid #eee; border-radius: 4px;"></div>
+        <div class="wc-info"><div class="wc-name">心情日记</div></div>
+        <div style="color:#ccc; font-size:18px;">&gt;</div>
+    </div>
+</div>
+
+<div id="wc-me-list" style="display:none;">
+    <div class="me-header">
+        <div class="me-av-box" id="me-av-img" onclick="pick('me-av-img')"></div> 
+        <div class="me-info-box">
+            <div class="me-nickname" id="me-nickname" onclick="editT('me-nickname','u_me_name')">茉莉</div>
+            
+            <div class="me-wxid" id="me-wx-id" onclick="editT('me-wx-id','u_wxid')">微信号：Molly_OS_2026</div>
+            
+            <div class="me-status-pill" onclick="editT('me-status','u_me_status')">
+                <span id="me-status">+ 状态</span>
+            </div>
+        </div>
+        <div style="font-size:20px; color:#ccc;">&gt;</div>
+    </div>
+
+    <div style="height:10px; background:#f5f5f5;"></div>
+
+    <div class="wc-list-item" onclick="alert('个人资料')">
+        <div class="wc-avatar" style="background: #fff; border: 1px solid #eee; border-radius: 4px;"></div>
+        <div class="wc-info"><div class="wc-name">个人资料 (人物设定)</div></div>
+        <div style="color:#ccc; font-size:18px;">&gt;</div>
+    </div>
+
+    <div style="height:10px; background:#f5f5f5;"></div>
+
+    <div class="wc-list-item">
+        <div class="wc-avatar" style="background: #fff; border: 1px solid #eee; border-radius: 4px;"></div>
+        <div class="wc-info"><div class="wc-name">钱包</div></div>
+        <div style="color:#ccc; font-size:18px;">&gt;</div>
+    </div>
+
+    <div class="wc-list-item">
+        <div class="wc-avatar" style="background: #fff; border: 1px solid #eee; border-radius: 4px;"></div>
+        <div class="wc-info"><div class="wc-name">表情库</div></div>
+        <div style="color:#ccc; font-size:18px;">&gt;</div>
+    </div>
+
+    <div style="height:10px; background:#f5f5f5;"></div>
+
+    <div class="wc-list-item">
+        <div class="wc-avatar" style="background: #fff; border: 1px solid #eee; border-radius: 4px;"></div>
+        <div class="wc-info"><div class="wc-name">情侣空间</div></div>
+        <div style="color:#ccc; font-size:18px;">&gt;</div>
+    </div>
+</div>
+<div id="wc-discover-list" style="display:none;">
+    <div class="wc-list-item" onclick="document.getElementById('wc-moments-page').classList.add('active')">
+        <div class="wc-avatar" style="background: #fff; border: 1px solid #eee; border-radius: 4px;"></div> <div class="wc-info"><div class="wc-name">朋友圈</div></div>
+        <div style="color:#ccc; font-size:18px;">&gt;</div>
+    </div>
+    
+    <div style="height:10px; background:#f5f5f5;"></div>
+
+    <div class="wc-list-item" onclick="alert('刮刮乐功能开发中...')">
+        <div class="wc-avatar" style="background: #fff; border: 1px solid #eee; border-radius: 4px;"></div>
+        <div class="wc-info"><div class="wc-name">刮刮乐</div></div>
+        <div style="color:#ccc; font-size:18px;">&gt;</div>
+    </div>
+
+    <div class="wc-list-item" onclick="alert('心情日记功能开发中...')">
+        <div class="wc-avatar" style="background: #fff; border: 1px solid #eee; border-radius: 4px;"></div>
+        <div class="wc-info"><div class="wc-name">心情日记</div></div>
+        <div style="color:#ccc; font-size:18px;">&gt;</div>
+    </div>
+</div>
+
+<div id="wc-me-list" style="display:none;">
+    <div class="me-header">
+        <div class="me-av-box" id="me-av-img" onclick="pick('me-av-img')"></div> 
+        <div class="me-info-box">
+            <div class="me-nickname" id="me-nickname" onclick="editT('me-nickname','u_me_name')">名字</div>
+            
+            <div class="me-wxid" id="me-wx-id" onclick="editT('me-wx-id','u_wxid')">微信号：xxxxxxxxxx</div>
+            
+            <div class="me-status-pill" onclick="editT('me-status','u_me_status')">
+                <span id="me-status">+ 状态</span>
+            </div>
+        </div>
+        <div style="font-size:20px; color:#ccc;">&gt;</div>
+    </div>
+
+    <div style="height:10px; background:#f5f5f5;"></div>
+
+    <div class="wc-list-item" onclick="alert('个人资料')">
+        <div class="wc-avatar" style="background: #fff; border: 1px solid #eee; border-radius: 4px;"></div>
+        <div class="wc-info"><div class="wc-name">个人资料 (人物设定)</div></div>
+        <div style="color:#ccc; font-size:18px;">&gt;</div>
+    </div>
+
+    <div style="height:10px; background:#f5f5f5;"></div>
+
+    <div class="wc-list-item">
+        <div class="wc-avatar" style="background: #fff; border: 1px solid #eee; border-radius: 4px;"></div>
+        <div class="wc-info"><div class="wc-name">钱包</div></div>
+        <div style="color:#ccc; font-size:18px;">&gt;</div>
+    </div>
+
+    <div class="wc-list-item">
+        <div class="wc-avatar" style="background: #fff; border: 1px solid #eee; border-radius: 4px;"></div>
+        <div class="wc-info"><div class="wc-name">表情库</div></div>
+        <div style="color:#ccc; font-size:18px;">&gt;</div>
+    </div>
+
+    <div style="height:10px; background:#f5f5f5;"></div>
+
+    <div class="wc-list-item">
+        <div class="wc-avatar" style="background: #fff; border: 1px solid #eee; border-radius: 4px;"></div>
+        <div class="wc-info"><div class="wc-name">情侣空间</div></div>
+        <div style="color:#ccc; font-size:18px;">&gt;</div>
+    </div>
+</div>
 
     <div class="wc-footer">
         <div class="wc-tab active" id="tab-chat" onclick="window.wcSwitchTab('chat')">
             <div class="wc-tab-icon">💬</div>
-            <div class="wc-tab-txt">消息</div>
+            <div class="wc-tab-txt">微信</div>
         </div>
         <div class="wc-tab" id="tab-contact" onclick="window.wcSwitchTab('contact')">
             <div class="wc-tab-icon">👥</div>
             <div class="wc-tab-txt">通讯录</div>
         </div>
+        <div class="wc-tab" id="tab-discover" onclick="window.wcSwitchTab('discover')">
+            <div class="wc-tab-icon">🧭</div> <div class="wc-tab-txt">发现</div>
+        </div>
+        <div class="wc-tab" id="tab-me" onclick="window.wcSwitchTab('me')">
+            <div class="wc-tab-icon">👤</div>
+            <div class="wc-tab-txt">我</div>
+        </div>
     </div>
 
-    <div class="wc-modal-mask" id="wc-modal-add">
+    <div id="wc-moments-page">
+        <div class="moments-nav">
+            <div class="m-nav-btn" onclick="document.getElementById('wc-moments-page').classList.remove('active')">&lt;</div>
+            <div class="m-nav-btn" style="margin-left:auto;" onclick="alert('发布功能开发中...')">📷</div>
+        </div>
+        <div class="moments-scroll">
+            <div class="moments-cover-area">
+                <div class="m-cover" id="m-cover-img" onclick="pick('m-cover-img')"></div>
+                <div class="m-user-line">
+                    <div class="m-username" id="m-my-name">xx</div>
+                    <div class="m-user-av" id="m-user-av" onclick="pick('m-user-av')"></div>
+                </div>
+            </div>
+            <div class="moments-stream" id="moments-stream">
+                <div style="text-align:center; padding: 50px; color:#999; font-size:14px;">
+                    暂时没有新动态
+                </div>
+            </div>
+            <div style="height:50px;"></div>
+        </div>
+    </div>
+ <div class="wc-modal-mask" id="wc-modal-add">
         <div class="wc-modal">
             <div class="wc-modal-head">添加好友</div>
             <div class="wc-add-content">
-                <div class="wc-up-av" id="wc-new-av" onclick="pick('f-wc-av')"></div>
+                <div class="wc-up-av" id="wc-new-av" onclick="pick('wc-new-av')"></div>
                 <input type="text" id="wc-new-name" class="wc-input" placeholder="输入好友备注">
             </div>
             <div class="wc-modal-btns">
@@ -2200,7 +2579,6 @@ input[type="file"] { display: none; }
         </div>
     </div>
 
-
         <!-- 🍼 漂流瓶应用 -->
         <div class="app-container" id="bottle-app">
             <div class="app-header">
@@ -2254,408 +2632,1379 @@ input[type="file"] { display: none; }
                 </div>
             </div>
         </div>
-    <script>
-/* =============================================
-   一、全能时钟与组件同步逻辑
-   ============================================= */
-function updateLockScreenTime() {
-    const now = new Date();
-    
-    // 1. 数字时钟同步 (锁屏 + 桌面)
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const timeString = `${hours}:${minutes}`;
-    document.getElementById('l-time').innerText = timeString;
-    document.getElementById('d-time').innerText = timeString;
-
-    // 2. 日期与星期同步
-    const month = now.getMonth() + 1;
-    const date = now.getDate();
-    const weekDays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-    const shortWeeks = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-    const dayIndex = now.getDay();
-
-    // 更新锁屏顶部大日期
-    document.getElementById('l-date').innerText = `${month}月${date}日 ${weekDays[dayIndex]}`;
-    
-    // 更新小组件里的日期数字 (31) 和 星期简写 (周三)
-    document.getElementById('mini-d').innerText = date;
-    const weekSpan = document.getElementById('mini-d').nextElementSibling;
-    if (weekSpan) weekSpan.innerText = shortWeeks[dayIndex];
-
-    // 3. 模拟时钟指针转动
-    const seconds = now.getSeconds();
-    const sDeg = seconds * 6;
-    const mDeg = now.getMinutes() * 6 + (seconds / 10);
-    const hDeg = (now.getHours() % 12) * 30 + (now.getMinutes() / 2);
-
-    document.getElementById('h-s').style.transform = `rotate(${sDeg}deg)`;
-    document.getElementById('h-m').style.transform = `rotate(${mDeg}deg)`;
-    document.getElementById('h-h').style.transform = `rotate(${hDeg}deg)`;
-}
-
-// 统一由一个定时器管理，每秒刷新一次
-setInterval(updateLockScreenTime, 1000);
-updateLockScreenTime(); 
-/* =============================================
-   二、自定义文字修改逻辑 (增强版)
-   ============================================= */
-function editT(id, storageKey) {
-    // 阻止点击事件向上冒泡，防止触发解锁
-    if (window.event) window.event.stopPropagation();
-
-    const el = document.getElementById(id);
-    const oldText = el.innerText;
-    
-    const newText = prompt("请输入你想修改的内容：", oldText);
-    
-    if (newText !== null && newText.trim() !== "") {
-        el.innerText = newText;
-        // 保存到本地
-        localStorage.setItem(storageKey, newText);
-    }
-}
-
-// 页面加载时恢复之前保存的文字 (包含新增的三条)
-function loadCustomTexts() {
-    const textsToLoad = [
-        { id: 'lkp', key: 'u_lkp' }, // 茉莉的小爪机
-        { id: 'n1', key: 'u_n1' },   // 小组件1
-        { id: 'n2', key: 'u_n2' },   // 小组件2
-        { id: 'n3', key: 'u_n3' },   // 小组件3
-        // 如果桌面的文字也需要初始化，可以在这里继续添加
-        { id: 'dl1', key: 'u_dl1' },
-        { id: 'dl2', key: 'u_dl2' },
-        { id: 'dl3', key: 'u_dl3' }
-    ];
-
-    textsToLoad.forEach(item => {
-        const savedValue = localStorage.getItem(item.key);
-        const targetEl = document.getElementById(item.id);
-        if (savedValue && targetEl) {
-            targetEl.innerText = savedValue;
-        }
-    });
-}
-
-// 确保在页面加载完成时执行
-window.addEventListener('load', loadCustomTexts);
-
-/* =============================================
-   三、上滑解锁逻辑
-   ============================================= */
-let startY = 0;
-const lockScreen = document.getElementById('lock-screen');
-const iphoneBox = document.getElementById('box');
-
-lockScreen.addEventListener('touchstart', (e) => {
-    startY = e.touches[0].clientY; // 记录手指按下时的 Y 坐标
-}, { passive: true });
-
-lockScreen.addEventListener('touchend', (e) => {
-    let endY = e.changedTouches[0].clientY;
-    let distance = startY - endY; // 计算滑动距离 (上滑是正数)
-
-    // 如果滑动距离超过 80 像素，则触发解锁
-    if (distance > 80) {
-        unlockPhone();
-    }
-}, { passive: true });
-
-// 鼠标模拟逻辑 (方便你在电脑浏览器调试)
-lockScreen.addEventListener('mousedown', (e) => {
-    startY = e.clientY;
-    const onMouseMove = (moveEvent) => {
-        // 可选：这里可以添加跟随手指的阻尼动画
-    };
-    const onMouseUp = (upEvent) => {
-        if (startY - upEvent.clientY > 80) {
-            unlockPhone();
-        }
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-    };
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-});
-
-function unlockPhone() {
-    // 这里的逻辑对应你 CSS 里的 .iphone.unlocked
-    iphoneBox.classList.add('unlocked');
-    
-    // 延迟一点点隐藏锁屏 DOM，让动画更顺滑
-    setTimeout(() => {
-        lockScreen.style.display = 'none';
-    }, 400); 
-}
- /* =============================================
-   四、桌面左右滑动切换逻辑
-   ============================================= */
-let desktopStartX = 0;
-const desktopBox = document.getElementById('box');
-const swiperWrapper = document.getElementById('main-desktop');
-
-// 1. 触摸开始
-swiperWrapper.addEventListener('touchstart', (e) => {
-    desktopStartX = e.touches[0].clientX;
-}, { passive: true });
-
-// 2. 触摸结束
-swiperWrapper.addEventListener('touchend', (e) => {
-    let desktopEndX = e.changedTouches[0].clientX;
-    handleSwipe(desktopStartX, desktopEndX);
-}, { passive: true });
-
-// 3. 鼠标模拟滑动 (兼容电脑端)
-swiperWrapper.addEventListener('mousedown', (e) => {
-    desktopStartX = e.clientX;
-    const onMouseUp = (upEvent) => {
-        handleSwipe(desktopStartX, upEvent.clientX);
-        document.removeEventListener('mouseup', onMouseUp);
-    };
-    document.addEventListener('mouseup', onMouseUp);
-});
-
-// 核心逻辑：判断滑动方向并切换页面
-function handleSwipe(start, end) {
-    const threshold = 50; // 触发翻页的最小距离
-    const distance = start - end; // 正数表示向左划，负数表示向右划
-
-    // 只有在解锁状态下才允许翻页
-    if (!desktopBox.classList.contains('unlocked')) return;
-
-    if (distance > threshold) {
-        // 向左划 -> 去第二页
-        goToPage(2);
-    } else if (distance < -threshold) {
-        // 向右划 -> 回第一页
-        goToPage(1);
-    }
-}
-
-// 切换页面的具体执行函数
-function goToPage(pageNum) {
-    if (pageNum === 1) {
-        desktopBox.classList.remove('page-2');
-        desktopBox.classList.add('page-1');
-    } else if (pageNum === 2) {
-        desktopBox.classList.remove('page-1');
-        desktopBox.classList.add('page-2');
-    }
-}
-/* =============================================
-   五、桌面图片上传与预览保存逻辑
-   ============================================= */
-// 1. 创建一个全局隐藏的文件输入框
-const hiddenPicker = document.createElement('input');
-hiddenPicker.type = 'file';
-hiddenPicker.accept = 'image/*';
-hiddenPicker.style.display = 'none';
-document.body.appendChild(hiddenPicker);
-
-let activeImgTarget = '';
-
-// 2. 图片选择触发函数 (对应 HTML 中的 pick('xxx'))
-function pick(targetId) {
-    if (window.event) window.event.stopPropagation();
-    activeImgTarget = targetId; // 记录当前点击的是哪个组件
-    hiddenPicker.click();       // 模拟点击文件上传
-}
-
-// 3. 处理文件读取与保存
-hiddenPicker.onchange = function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const base64Data = event.target.result;
-            // 找到对应的显示元素 (去掉 ID 前缀 'f-')
-            const displayId = activeImgTarget.replace('f-', '');
-            const el = document.getElementById(displayId);
-            
-            if (el) {
-                // 更新 UI 样式
-                el.style.backgroundImage = `url(${base64Data})`;
-                el.style.backgroundSize = 'cover';
-                el.style.backgroundPosition = 'center';
-                // 如果是相框等带文字的，清除内部文字
-                if (el.innerText === '+') el.innerText = '';
-                
-                // 保存到本地存储
-                localStorage.setItem('img_save_' + displayId, base64Data);
-            }
-        };
-        reader.readAsDataURL(file);
-    }
+     </style>
+     <script>
+// ==================== 全局变量 ====================
+const STATE = {
+  currentPage: 1,
+  unlocked: false,
+  currentApp: null,
+  currentChat: null,
+  musicPlaying: false,
+  currentSong: null,
+  musicMode: 'loop', // loop, shuffle, single - 修复：将中文引号改为英文引号
+  playlist: [],
+  playlistIndex: 0,
+  isDragging: false,
+  dragTarget: null,
+  startX: 0,
+  startY: 0,
+  currentX: 0,
+  currentY: 0
 };
-/* =============================================
-   六、桌面文字修改与持久化记忆
-   ============================================= */
-// 这里的 editT 函数已经在之前的步骤定义过
-// 我们只需要确保它能处理桌面上的所有 ID：
-// 第一页：dl1, dl2, dl3 (日记), mt1, mt2 (距离/时间), p1-msg1, p1-msg2 (消息)
-// 第二页：p2bio (简介), p2loc (位置)
 
-function editDesktopText(id, storageKey) {
-    // 复用之前的 editT 逻辑
-    editT(id, storageKey);
-}
-/* =============================================
-   七、桌面内容初始化加载逻辑
-   ============================================= */
-function initDesktopContent() {
-    // 1. 待还原的图片组件列表
-    const imgList = ['avL', 'avR', 'i-p-wall', 'p2bg', 'p2av', 'p2memo'];
-    
-    imgList.forEach(id => {
-        const savedImg = localStorage.getItem('img_save_' + id);
-        const el = document.getElementById(id);
-        if (savedImg && el) {
-            el.style.backgroundImage = `url(${savedImg})`;
-            el.style.backgroundSize = 'cover';
-            if (el.innerText === '+') el.innerText = '';
-        }
-    });
+// 存储数据
+const DATA = {
+  contacts: [],
+  chats: {},
+  messages: {},
+  settings: {},
+  userInfo: {
+    name: '茉莉', // 修复：中文文本使用英文引号包裹
+    wxid: 'Molly_OS_2026',
+    status: '+ 状态'
+  }
+};
 
-    // 2. 待还原的文字组件列表 (ID 对应之前的 storageKey)
-    const textList = [
-        { id: 'dl1', key: 'u_dl1' },
-        { id: 'dl2', key: 'u_dl2' },
-        { id: 'dl3', key: 'u_dl3' },
-        { id: 'mt1', key: 'u_mt1' },
-        { id: 'mt2', key: 'u_mt2' },
-        { id: 'p1-msg1', key: 'u_msg1' },
-        { id: 'p1-msg2', key: 'u_msg2' },
-        { id: 'p2bio', key: 'u_p2bio' },
-        { id: 'p2loc', key: 'u_p2loc' }
-    ];
-
-    textList.forEach(item => {
-        const savedText = localStorage.getItem(item.key);
-        const el = document.getElementById(item.id);
-        if (savedText && el) {
-            el.innerText = savedText;
-        }
-    });
-}
-
-// 将初始化逻辑加入 window.onload
-window.addEventListener('load', () => {
-    // 之前已有的加载逻辑...
-    initDesktopContent();
+// ==================== 初始化 ====================
+window.addEventListener('DOMContentLoaded', () => {
+  initTime();
+  initLockScreen();
+  initDesktop();
+  initWechat();
+  initSettings();
+  loadUserData();
+  setInterval(updateTime, 1000);
+  setInterval(updateClock, 1000);
 });
-/* =============================================
-   八、桌面图标点击打开 APP 逻辑
-   ============================================= */
+
+// ==================== 时间系统 ====================
+function initTime() {
+  updateTime();
+  updateClock();
+}
+
+function updateTime() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2, '0');
+  const m = String(now.getMinutes()).padStart(2, '0');
+  const timeStr = `${h}:${m}`;
+
+  const els = ['l-time', 'd-time'];
+  els.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerText = timeStr;
+  });
+
+  // 更新日期
+  const date = now.getDate();
+  const day = ['日', '一', '二', '三', '四', '五', '六'][now.getDay()];
+  const month = now.getMonth() + 1;
+
+  const dateEl = document.getElementById('l-date');
+  if (dateEl) dateEl.innerText = `${month}月${date}日 星期${day}`;
+
+  const miniD = document.getElementById('mini-d');
+  if (miniD) miniD.innerText = date;
+}
+
+function updateClock() {
+  const now = new Date();
+  const h = now.getHours() % 12;
+  const m = now.getMinutes();
+  const s = now.getSeconds();
+
+  const hDeg = (h * 30) + (m * 0.5);
+  const mDeg = m * 6;
+  const sDeg = s * 6;
+
+  const hh = document.getElementById('h-h');
+  const hm = document.getElementById('h-m');
+  const hs = document.getElementById('h-s');
+
+  if (hh) hh.style.transform = `rotate(${hDeg}deg)`;
+  if (hm) hm.style.transform = `rotate(${mDeg}deg)`;
+  if (hs) hs.style.transform = `rotate(${sDeg}deg)`;
+}
+
+// ==================== 锁屏 ====================
+function initLockScreen() {
+  const lockScreen = document.getElementById('lock-screen');
+  let startY = 0;
+
+  lockScreen.addEventListener('touchstart', e => {
+    startY = e.touches[0].clientY;
+  });
+
+  lockScreen.addEventListener('touchmove', e => {
+    const deltaY = e.touches[0].clientY - startY;
+    if (deltaY < -50) {
+      unlock();
+    }
+  });
+
+  lockScreen.addEventListener('click', unlock);
+}
+
+function unlock() {
+  const box = document.getElementById('box');
+  box.classList.remove('locked');
+  box.classList.add('unlocked');
+  STATE.unlocked = true;
+}
+
+// ==================== 桌面系统 ====================
+function initDesktop() {
+  const sw = document.getElementById('sw');
+  let startX = 0;
+  let currentX = 0;
+
+  sw.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+  });
+
+  sw.addEventListener('touchmove', e => {
+    currentX = e.touches[0].clientX;
+  });
+
+  sw.addEventListener('touchend', () => {
+    const delta = currentX - startX;
+    const box = document.getElementById('box');
+
+    if (delta > 100 && STATE.currentPage === 2) {
+      box.classList.remove('page-2');
+      box.classList.add('page-1');
+      STATE.currentPage = 1;
+    } else if (delta < -100 && STATE.currentPage === 1) {
+      box.classList.remove('page-1');
+      box.classList.add('page-2');
+      STATE.currentPage = 2;
+    }
+  });
+
+  loadIcons();
+  loadWallpapers();
+}
+
+function loadIcons() {
+  const icons = {
+    'i-weibo': localStorage.getItem('icon_weibo'),
+    'i-date': localStorage.getItem('icon_date'),
+    'i-music': localStorage.getItem('icon_music'),
+    'i-game': localStorage.getItem('icon_game'),
+    'i-secret': localStorage.getItem('icon_secret'),
+    'i-memory': localStorage.getItem('icon_memory'),
+    'i-shop': localStorage.getItem('icon_shop'),
+    'i-taobao': localStorage.getItem('icon_taobao'),
+    'i-gogogo': localStorage.getItem('icon_gogogo'),
+    'i-preset': localStorage.getItem('icon_preset'),
+    'i-douyin': localStorage.getItem('icon_douyin'),
+    'i-calendar': localStorage.getItem('icon_calendar'),
+    'dch': localStorage.getItem('icon_wechat'),
+    'dbo': localStorage.getItem('icon_bottle'),
+    'dbk': localStorage.getItem('icon_worldbook'),
+    'dst': localStorage.getItem('icon_settings')
+  };
+
+  for (let [id, url] of Object.entries(icons)) {
+    if (url) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.backgroundImage = `url(${url})`;
+        el.classList.add('has-img');
+      }
+    }
+  }
+}
+
+function loadWallpapers() {
+  const walls = {
+    'global-wall': localStorage.getItem('wall_lock'),
+    'i-p-wall': localStorage.getItem('wall_p1'),
+    'p2bg': localStorage.getItem('wall_p2bg'),
+    'p2av': localStorage.getItem('wall_p2av'),
+    'p2memo': localStorage.getItem('wall_p2memo')
+  };
+
+  for (let [id, url] of Object.entries(walls)) {
+    if (url) {
+      const el = document.getElementById(id);
+      if (el) el.style.backgroundImage = `url(${url})`;
+    }
+  }
+}
+
+// ==================== 应用管理 ====================
 function openApp(appName) {
-    if (window.event) window.event.stopPropagation();
-    
-    // 1. 微信
-    if (appName === 'wechat') {
-        document.getElementById('wc-app').classList.add('active');
-    } 
-    // 2. 漂流瓶
-    else if (appName === 'bottle') {
-        document.getElementById('bottle-app').style.display = 'flex';
-    } 
-    // 3. 世界书
-    else if (appName === 'worldbook') {
-        document.getElementById('worldbook-app').style.display = 'flex';
+  STATE.currentApp = appName;
+
+  const apps = {
+    'wechat': 'wc-app',
+    'bottle': 'bottle-app',
+    'worldbook': 'worldbook-app',
+    'settings': 'settings-app'
+  };
+
+  if (apps[appName]) {
+    const appEl = document.getElementById(apps[appName]);
+    if (appEl) {
+      appEl.classList.add('active');
+      if (appName === 'wechat') loadWechatData();
+      if (appName === 'settings') loadSettingsMenu();
     }
-    // 4. 系统设置
-    else if (appName === 'settings') {
-        // 我们会在这里调用后续编写的设置页动态渲染逻辑
-        renderSettingsMain();
-        document.getElementById('settings-app').classList.add('active');
-    }
-    // 5. 其他通用应用 (显示开发中占位)
-    else {
-        const genericApp = document.getElementById('generic-app');
-        document.getElementById('generic-app-title').innerText = appName.toUpperCase();
-        document.getElementById('generic-app-name').innerText = appName;
-        genericApp.style.display = 'flex';
-    }
+  } else {
+    // 通用应用
+    openGenericApp(appName);
+  }
 }
 
-// 通用的关闭 App 函数
-function closeApp(appId) {
-    // 处理不同类型的 App 容器
-    const el = document.getElementById(appId + '-app') || document.getElementById(appId);
-    if (el) {
-        el.classList.remove('active');
-        el.style.display = 'none';
-    }
+function closeApp(appName) {
+  const apps = {
+    'wechat': 'wc-app',
+    'bottle': 'bottle-app',
+    'worldbook': 'worldbook-app',
+    'settings': 'settings-app',
+    'generic': 'generic-app'
+  };
+
+  const appEl = document.getElementById(apps[appName]);
+  if (appEl) appEl.classList.remove('active');
+  STATE.currentApp = null;
 }
 
-// 针对你 HTML 里的“返回”按钮调用的通用关闭函数
+function openGenericApp(name) {
+  const appInfo = {
+    'weibo': { icon: '📱', title: '微博', desc: '功能开发中…' },
+    'date': { icon: '💕', title: '约会', desc: '功能开发中…' },
+    'music': { icon: '🎵', title: '网易云', desc: '功能开发中…' },
+    'game': { icon: '🎮', title: '游戏', desc: '功能开发中…' },
+    'secret': { icon: '🔒', title: '秘密', desc: '功能开发中…' },
+    'memory': { icon: '📅', title: '纪念日', desc: '功能开发中…' },
+    'shop': { icon: '🏪', title: '解忧杂货铺', desc: '功能开发中…' },
+    'taobao': { icon: '🛒', title: '淘宝闪购', desc: '功能开发中…' },
+    'desire': { icon: '🎭', title: '欲望回廊', desc: '功能开发中…' }
+  };
+
+  const info = appInfo[name] || { icon: '📦', title: '应用', desc: '功能开发中…' };
+
+  document.getElementById('generic-app-icon').innerText = info.icon;
+  document.getElementById('generic-app-title').innerText = info.title;
+  document.getElementById('generic-app-name').innerText = info.title;
+  document.getElementById('generic-app-desc').innerText = info.desc;
+
+  document.getElementById('generic-app').classList.add('active');
+  STATE.currentApp = 'generic';
+}
+
 function closeCurrentPage() {
-    // 关闭设置页
-    document.getElementById('settings-app').classList.remove('active');
-    // 关闭微信
-    document.getElementById('wc-app').classList.remove('active');
+  if (STATE.currentApp === 'settings') {
+    closeApp('settings');
+  }
 }
-/* =============================================
-   十、增强型组件状态持久化 (还原逻辑)
-   ============================================= */
-function reloadAllSavedData() {
-    // 1. 还原图片组件
-    // 请确保这些 ID 与你 HTML 里的 id 完全一致
-    const imageIds = ['avL', 'avR', 'i-p-wall', 'p2bg', 'p2av', 'p2memo'];
-    
-    imageIds.forEach(id => {
-        const savedImg = localStorage.getItem('img_save_' + id);
-        const el = document.getElementById(id);
-        if (savedImg && el) {
-            el.style.backgroundImage = `url("${savedImg}")`; // 加引号更规范
-            el.style.backgroundSize = 'cover';
-            el.style.backgroundPosition = 'center';
-            if (el.innerText === '+') el.innerText = '';
-            console.log('👀 还原图片:', id);
-        }
-    });
 
-    // 2. 还原文字组件
-    const textConfigs = [
-        { id: 'lkp', key: 'u_lkp' }, { id: 'n1', key: 'u_n1' },
-        { id: 'n2', key: 'u_n2' }, { id: 'n3', key: 'u_n3' },
-        { id: 'dl1', key: 'u_dl1' }, { id: 'dl2', key: 'u_dl2' },
-        { id: 'dl3', key: 'u_dl3' }, { id: 'mt1', key: 'u_mt1' },
-        { id: 'mt2', key: 'u_mt2' }, { id: 'p1-msg1', key: 'u_msg1' },
-        { id: 'p1-msg2', key: 'u_msg2' }, { id: 'p2bio', key: 'u_p2bio' },
-        { id: 'p2loc', key: 'u_p2loc' }
-    ];
+// ==================== 编辑文本 ====================
+function editT(elId, storageKey) {
+  const el = document.getElementById(elId);
+  if (!el) return;
 
-    textConfigs.forEach(config => {
-        const savedText = localStorage.getItem(config.key);
-        const el = document.getElementById(config.id);
-        if (savedText && el) {
-            el.innerText = savedText;
-        }
-    });
-}
-/* =============================================
-   十一、系统启动总线
-   ============================================= */
-function initSystem() {
-    console.log("🚀 Molly OS 正在启动...");
-    
-    // 优先还原数据
-    reloadAllSavedData();
-    
-    // 启动时钟同步
-    if (typeof updateLockScreenTime === 'function') {
-        updateLockScreenTime();
-        setInterval(updateLockScreenTime, 1000);
+  const current = el.innerText;
+  const newText = prompt('编辑内容:', current);
+
+  if (newText !== null && newText !== current) {
+    el.innerText = newText;
+    if (storageKey) {
+      localStorage.setItem(storageKey, newText);
     }
+  }
 }
 
-// 确保在页面资源加载完后执行
-if (document.readyState === 'complete') {
-    initSystem();
-} else {
-    window.addEventListener('load', initSystem);
+// ==================== 图片选择 ====================
+function pick(target) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = evt => {
+      const url = evt.target.result;
+      applyImage(target, url);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  input.click();
 }
 
+function applyImage(target, url) {
+  const el = document.getElementById(target.replace('f-', ''));
+  if (!el) return;
+
+  el.style.backgroundImage = `url(${url})`;
+  el.classList.add('has-img');
+
+  localStorage.setItem(`img_${target}`, url);
+
+  showToast('上传成功!');
+}
+
+function showToast(msg) {
+  const toast = document.createElement('div');
+  toast.className = 'upload-success';
+  toast.innerText = msg;
+  toast.style.display = 'block';
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 2000);
+}
+
+// ==================== 微信系统 ====================
+function initWechat() {
+  loadDefaultContacts();
+}
+
+function loadDefaultContacts() {
+  const saved = localStorage.getItem('wc_contacts');
+  if (saved) {
+    DATA.contacts = JSON.parse(saved);
+  } else {
+    DATA.contacts = [
+      {
+        id: 'c1',
+        name: '小狗',
+        avatar: '',
+        lastMsg: '在吗?',
+        time: '10:30',
+        pinned: false,
+        desc: '可爱的小狗狗',
+        sign: '汪汪汪~'
+      }
+    ];
+  }
+}
+
+function loadWechatData() {
+  renderChatList();
+  renderContactList();
+}
+
+function renderChatList() {
+  const list = document.getElementById('wc-chat-list');
+  if (!list) return;
+
+  list.innerHTML = '';
+
+  const sorted = [...DATA.contacts].sort((a, b) => {
+    if (a.pinned && !b.pinned) return -1;
+    if (!a.pinned && b.pinned) return 1;
+    return 0;
+  });
+
+  sorted.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'wc-list-item' + (c.pinned ? ' pinned' : '');
+    item.innerHTML = `<div class="wc-avatar" style="background-image:url(${c.avatar || ''})"></div> <div class="wc-info"> <div class="wc-name">${c.name}</div> <div class="wc-last-msg">${c.lastMsg || ''}</div> </div> <div class="wc-time">${c.time || ''}</div> <div class="wc-swipe-actions"> <div class="wc-swipe-btn btn-pin">${c.pinned ? '取消' : '置顶'}</div> <div class="wc-swipe-btn btn-del">删除</div> </div>`;
+
+    item.addEventListener('click', () => openChat(c));
+
+    // 左滑功能
+    let startX = 0;
+    item.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+    });
+
+    item.addEventListener('touchmove', e => {
+      const delta = e.touches[0].clientX - startX;
+      if (delta < -50) {
+        item.classList.add('swiped');
+      } else if (delta > 50) {
+        item.classList.remove('swiped');
+      }
+    });
+
+    list.appendChild(item);
+  });
+}
+
+function renderContactList() {
+  const list = document.getElementById('wc-contact-list');
+  if (!list) return;
+
+  list.innerHTML = '';
+
+  DATA.contacts.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'contact-item';
+    item.innerHTML = `<div class="c-av-small" style="background-image:url(${c.avatar || ''})"></div> <div class="c-name-text">${c.name}</div>`;
+    item.addEventListener('click', () => openProfile(c));
+    list.appendChild(item);
+  });
+}
+
+// ==================== 微信标签切换 ====================
+window.wcSwitchTab = function(tab) {
+  const tabs = ['chat', 'contact', 'discover', 'me'];
+  tabs.forEach(t => {
+    document.getElementById(`tab-${t}`)?.classList.remove('active');
+    const list = document.getElementById(`wc-${t}-list`);
+    if (list) list.style.display = 'none';
+  });
+
+  document.getElementById(`tab-${tab}`)?.classList.add('active');
+  const list = document.getElementById(`wc-${tab}-list`);
+  if (list) list.style.display = 'block';
+
+  // 更新标题
+  const titles = {
+    'chat': '消息',
+    'contact': '通讯录',
+    'discover': '发现',
+    'me': '我'
+  };
+  const titleEl = document.getElementById('wc-h-txt');
+  if (titleEl) titleEl.innerText = titles[tab] || '微信';
+};
+
+// ==================== 微信聊天 ====================
+function openChat(contact) {
+  STATE.currentChat = contact;
+
+  const win = document.getElementById('wc-chat-window');
+  win.style.display = 'flex';
+
+  document.getElementById('c-title').innerText = contact.name;
+
+  loadMessages(contact.id);
+}
+
+window.closeChat = function() {
+  document.getElementById('wc-chat-window').style.display = 'none';
+  STATE.currentChat = null;
+};
+
+function loadMessages(contactId) {
+  const msgs = DATA.messages[contactId] || [];
+  const list = document.getElementById('c-msg-list');
+  if (!list) return;
+
+  list.innerHTML = '';
+
+  msgs.forEach(msg => {
+    const row = document.createElement('div');
+    row.className = `bubble-row ${msg.isMe ? 'me' : ''}`;
+
+    let bubbleHTML = '';
+
+    if (msg.type === 'text') {
+      bubbleHTML = `<div class="c-bubble">${msg.content}</div>`;
+    } else if (msg.type === 'transfer') {
+      bubbleHTML = createTransferBubble(msg);
+    } else if (msg.type === 'ele') {
+      bubbleHTML = createEleBubble(msg);
+    } else if (msg.type === 'image') {
+      bubbleHTML = `<div class="c-bubble"><div class="image-msg"><img src="${msg.content}" /></div></div>`;
+    } else if (msg.type === 'cat-card') {
+      bubbleHTML = createCatCard(msg);
+    }
+
+    row.innerHTML = `
+      <div class="c-av" style="background-image:url(${msg.isMe ? DATA.userInfo.avatar || '' : STATE.currentChat.avatar || ''})"></div>
+      ${bubbleHTML}
+    `;
+
+    list.appendChild(row);
+  });
+
+  list.scrollTop = list.scrollHeight;
+}
+
+function createTransferBubble(msg) {
+  return `<div class="c-bubble transfer"> <div class="t-top"> <div class="t-icon-circle">¥</div> <div class="t-info"> <div class="t-amount">¥${msg.amount}</div> <div class="t-desc">${msg.note || '微信转账'}</div> </div> </div> <div class="t-footer">${msg.status || '待收款'}</div> </div>`;
+}
+
+function createEleBubble(msg) {
+  const d = msg.eleData || {};
+  const isFeed = d.type === 'feed';
+
+  return `<div class="c-bubble" style="background:transparent; border:none; padding:0;"> <div class="ele-card-inner"> <div class="ele-bubble-top ${isFeed ? 'feed' : 'pay'}"> <div style="font-size:24px;">${isFeed ? '🍕' : '🙏'}</div> <div style="flex:1;"> <div style="font-size:13px; font-weight:bold;">${isFeed ? '我要投喂你' : '帮我付款吧'}</div> <div style="font-size:10px; opacity:0.9; margin-top:2px;">${d.shop || '未知店铺'}</div> </div> </div> <div class="ele-bubble-body"> <div class="ele-shop-title"> <span>${d.shop || '美食外卖'}</span> <span style="font-size:11px; color:#999;">#${d.orderId || '000'}</span> </div> <div class="ele-order-list"> ${(d.items || []).map(item => `
+<div class="ele-order-item">
+<span>${item.name}</span>
+<span>×${item.qty}</span>
+</div>
+`).join('')} </div> <div class="ele-total-row"> <span style="font-size:12px; color:#666;">总计</span> <span style="font-size:18px; font-weight:bold; color:#ff5339;">¥${d.total || '0.00'}</span> </div> ${d.note ? `<div class="ele-note-text">备注: ${d.note}</div>` : ''} </div> <div class="ele-bubble-foot"> <span>${new Date().toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'})}</span> <span style="color:#999;">饿了么</span> </div> </div> </div>`;
+}
+
+function createCatCard(msg) {
+  return `<div class="c-bubble" style="background:transparent; border:none; padding:0;"> <div class="cat-flip-container" onclick="this.classList.toggle('flipped')"> <div class="cat-flip-card"> <div class="cat-flip-front"> <img src="${msg.frontImg || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\'%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' font-size=\'60\'%3E🐱%3C/text%3E%3C/svg%3E'}" /> <div class="cat-flip-text">${msg.frontText || '点击翻转'}</div> </div> <div class="cat-flip-back"> <span>暹罗猫卡片</span> ${msg.backText || '这是一只可爱的暹罗猫~'} </div> </div> </div> </div>`;
+}
+
+window.handleInput = function(input) {
+  const val = input.value.trim();
+  const sendBtn = document.getElementById('btn-send');
+
+  if (val) {
+    sendBtn.style.display = 'block';
+    document.getElementById('btn-bone').style.display = 'none';
+    document.getElementById('btn-plus').style.display = 'none';
+  } else {
+    sendBtn.style.display = 'none';
+    document.getElementById('btn-bone').style.display = 'flex';
+    document.getElementById('btn-plus').style.display = 'flex';
+  }
+};
+
+window.sendMsg = function() {
+  const input = document.getElementById('c-input');
+  const text = input.value.trim();
+  if (!text || !STATE.currentChat) return;
+
+  const msg = {
+    type: 'text',
+    content: text,
+    isMe: true,
+    time: new Date().toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'})
+  };
+
+  if (!DATA.messages[STATE.currentChat.id]) {
+    DATA.messages[STATE.currentChat.id] = [];
+  }
+  DATA.messages[STATE.currentChat.id].push(msg);
+
+  input.value = '';
+  window.handleInput(input);
+
+  loadMessages(STATE.currentChat.id);
+
+  // AI 回复 (模拟)
+  setTimeout(() => {
+    const reply = {
+      type: 'text',
+      content: '收到~',
+      isMe: false,
+      time: new Date().toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'})
+    };
+    DATA.messages[STATE.currentChat.id].push(reply);
+    loadMessages(STATE.currentChat.id);
+  }, 1000);
+};
+
+window.triggerReply = function() {
+  alert('AI 回复功能开发中…');
+};
+
+window.togglePanel = function(type) {
+  const panels = ['p-plus', 'p-emoji'];
+  panels.forEach(p => {
+    const el = document.getElementById(p);
+    if (el) el.classList.remove('open');
+  });
+
+  const target = document.getElementById(`p-${type}`);
+  if (target) target.classList.add('open');
+};
+
+// ==================== 转账功能 ====================
+window.openTransfer = function() {
+  if (!STATE.currentChat) return;
+
+  const modal = document.getElementById('wc-transfer-modal');
+  modal.style.display = 'flex';
+
+  const av = document.getElementById('wt-av-target');
+  av.style.backgroundImage = `url(${STATE.currentChat.avatar || ''})`;
+
+  document.getElementById('wt-name-target').innerText = `转账给 ${STATE.currentChat.name}`;
+};
+
+window.checkTransfer = function(input) {
+  const btn = document.getElementById('wt-btn');
+  const val = parseFloat(input.value);
+
+  if (val > 0) {
+    btn.classList.add('active');
+  } else {
+    btn.classList.remove('active');
+  }
+};
+
+window.confirmTransfer = function() {
+  const amount = document.getElementById('wt-amount').value;
+  const note = document.getElementById('wt-note').value;
+
+  if (!amount || parseFloat(amount) <= 0) {
+    alert('请输入有效金额');
+    return;
+  }
+
+  const msg = {
+    type: 'transfer',
+    amount: parseFloat(amount).toFixed(2),
+    note: note || '微信转账',
+    status: '待收款',
+    isMe: true,
+    time: new Date().toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'})
+  };
+
+  if (!DATA.messages[STATE.currentChat.id]) {
+    DATA.messages[STATE.currentChat.id] = [];
+  }
+  DATA.messages[STATE.currentChat.id].push(msg);
+
+  document.getElementById('wc-transfer-modal').style.display = 'none';
+  document.getElementById('wt-amount').value = '';
+  document.getElementById('wt-note').value = '';
+
+  loadMessages(STATE.currentChat.id);
+
+  window.togglePanel('');
+};
+
+// ==================== 饿了么功能 ====================
+window.openEle = function() {
+  document.getElementById('wc-ele-modal').style.display = 'flex';
+  renderDefaultShops();
+};
+
+function renderDefaultShops() {
+  const shops = [
+    { name: '喜茶', tags: ['奶茶', '新茶饮'], img: '', items: ['多肉葡萄', '芝芝莓莓', '波波茶'] },
+    { name: 'KFC', tags: ['快餐', '炸鸡'], img: '', items: ['全家桶', '香辣鸡翅', '蛋挞'] },
+    { name: '星巴克', tags: ['咖啡', '下午茶'], img: '', items: ['美式', '拿铁', '摩卡'] }
+  ];
+
+  const list = document.getElementById('ele-shop-list');
+  list.innerHTML = '';
+
+  shops.forEach(s => {
+    const item = document.createElement('div');
+    item.className = 'ele-shop-item';
+    item.innerHTML = `<div class="es-img" style="background-image:url(${s.img})"></div> <div class="es-info"> <div class="es-name">${s.name}</div> <div class="es-tags"> ${s.tags.map(t => `<div class="es-tag">${t}</div>`).join('')} </div> </div> <div class="es-btn ${STATE.eleMode === 'pay' ? 'pay-me' : ''}">${STATE.eleMode === 'pay' ? '帮我付' : '投喂TA'}</div> `;
+
+    item.addEventListener('click', () => openEleConfirm(s));
+    list.appendChild(item);
+  });
+}
+
+STATE.eleMode = 'feed';
+
+window.switchEleTab = function(mode) {
+  STATE.eleMode = mode;
+
+  document.getElementById('etab-feed').classList.remove('active');
+  document.getElementById('etab-pay').classList.remove('active');
+  document.getElementById(`etab-${mode}`).classList.add('active');
+
+  renderDefaultShops();
+};
+
+function openEleConfirm(shop) {
+  document.getElementById('ec-shop-name').innerText = shop.name;
+
+  const goodsList = document.getElementById('ec-goods-list');
+  goodsList.innerHTML = '';
+
+  shop.items.forEach(item => {
+    const tag = document.createElement('div');
+    tag.className = 'ec-tag';
+    tag.innerText = item;
+    tag.onclick = function() {
+      this.classList.toggle('active');
+    };
+    goodsList.appendChild(tag);
+  });
+
+  STATE.currentEleShop = shop;
+
+  document.getElementById('ele-confirm-mask').style.display = 'flex';
+  document.getElementById('ele-confirm-modal').style.display = 'flex';
+}
+
+window.confirmEleOrder = function() {
+  const selected = Array.from(document.querySelectorAll('#ec-goods-list .ec-tag.active'))
+    .map(el => ({ name: el.innerText, qty: 1 }));
+
+  if (selected.length === 0) {
+    alert('请至少选择一个商品');
+    return;
+  }
+
+  const note = document.getElementById('ec-note').value;
+  const total = (selected.length * 25.8).toFixed(2);
+
+  const msg = {
+    type: 'ele',
+    eleData: {
+      type: STATE.eleMode,
+      shop: STATE.currentEleShop.name,
+      items: selected,
+      total: total,
+      note: note,
+      orderId: Math.random().toString(36).substr(2, 6).toUpperCase()
+    },
+    isMe: true,
+    time: new Date().toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'})
+  };
+
+  if (!DATA.messages[STATE.currentChat.id]) {
+    DATA.messages[STATE.currentChat.id] = [];
+  }
+  DATA.messages[STATE.currentChat.id].push(msg);
+
+  document.getElementById('ele-confirm-mask').style.display = 'none';
+  document.getElementById('ele-confirm-modal').style.display = 'none';
+  document.getElementById('wc-ele-modal').style.display = 'none';
+  document.getElementById('ec-note').value = '';
+
+  loadMessages(STATE.currentChat.id);
+  window.togglePanel('');
+
+  showToast('订单已发送!');
+};
+
+window.searchFood = function(keyword) {
+  alert(`搜索: ${keyword}\n功能开发中...`);
+};
+
+// ==================== 照片功能 ====================
+window.openPhotoMenu = function() {
+  document.getElementById('wc-photo-mask').style.display = 'flex';
+  document.getElementById('wc-photo-sheet').classList.add('active');
+};
+
+window.closePhotoMenu = function() {
+  document.getElementById('wc-photo-mask').style.display = 'none';
+  document.getElementById('wc-photo-sheet').classList.remove('active');
+};
+
+window.handleSendImg = function(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    const msg = {
+      type: 'image',
+      content: e.target.result,
+      isMe: true,
+      time: new Date().toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'})
+    };
+
+    if (!DATA.messages[STATE.currentChat.id]) {
+      DATA.messages[STATE.currentChat.id] = [];
+    }
+    DATA.messages[STATE.currentChat.id].push(msg);
+
+    loadMessages(STATE.currentChat.id);
+    window.togglePanel('');
+  };
+
+  reader.readAsDataURL(file);
+};
+
+window.inputPhotoText = function() {
+  const desc = prompt('描述你想要的照片 (AI将生成):');
+  if (!desc) return;
+
+  // 创建暹罗猫翻转卡片
+  const msg = {
+    type: 'cat-card',
+    frontImg: '',
+    frontText: '🎁 点击翻转查看',
+    backText: desc,
+    isMe: true,
+    time: new Date().toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'})
+  };
+
+  if (!DATA.messages[STATE.currentChat.id]) {
+    DATA.messages[STATE.currentChat.id] = [];
+  }
+  DATA.messages[STATE.currentChat.id].push(msg);
+
+  loadMessages(STATE.currentChat.id);
+  window.closePhotoMenu();
+  window.togglePanel('');
+};
+
+// ==================== 音乐播放器 ====================
+window.openMusic = function() {
+  const player = document.getElementById('wc-music-player');
+  player.style.display = 'flex';
+
+  // 加载头像
+  const meAv = document.getElementById('mp-av-me');
+  const otherAv = document.getElementById('mp-av-other');
+
+  if (meAv) meAv.style.backgroundImage = `url(${DATA.userInfo.avatar || ''})`;
+  if (otherAv && STATE.currentChat) {
+    otherAv.style.backgroundImage = `url(${STATE.currentChat.avatar || ''})`;
+  }
+
+  initMusicDrag();
+  window.togglePanel('');
+};
+
+function initMusicDrag() {
+  const player = document.getElementById('wc-music-player');
+  const handle = document.getElementById('mp-drag-handle');
+
+  let isDragging = false;
+  let startX, startY, initialX, initialY;
+
+  handle.addEventListener('touchstart', e => {
+    isDragging = true;
+    const touch = e.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+
+    const rect = player.getBoundingClientRect();
+    initialX = rect.left;
+    initialY = rect.top;
+  });
+
+  document.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - startX;
+    const deltaY = touch.clientY - startY;
+
+    player.style.left = (initialX + deltaX) + 'px';
+    player.style.top = (initialY + deltaY) + 'px';
+    player.style.transform = 'none';
+  });
+
+  document.addEventListener('touchend', () => {
+    isDragging = false;
+  });
+}
+
+window.searchMusic = function(query) {
+  if (!query) return;
+
+  // 模拟搜索结果
+  const results = [
+    { id: 1, name: query, artist: '未知歌手', duration: 180 },
+    { id: 2, name: '相关歌曲1', artist: '歌手A', duration: 200 },
+    { id: 3, name: '相关歌曲2', artist: '歌手B', duration: 220 }
+  ];
+
+  STATE.playlist = results;
+  renderPlaylist();
+
+  document.getElementById('mp-playlist-box').style.display = 'flex';
+};
+
+function renderPlaylist() {
+  const list = document.getElementById('mp-list-content');
+  list.innerHTML = '';
+
+  STATE.playlist.forEach((song, idx) => {
+    const item = document.createElement('div');
+    item.className = 'mp-list-item' + (idx === STATE.playlistIndex ? ' active' : '');
+    item.innerHTML = `<div>${song.name} - ${song.artist}</div> <div style="font-size:10px;color:#999;">${formatTime(song.duration)}</div>`;
+    item.addEventListener('click', () => playSong(idx));
+    list.appendChild(item);
+  });
+}
+
+function playSong(idx) {
+  STATE.playlistIndex = idx;
+  const song = STATE.playlist[idx];
+
+  document.getElementById('mp-song-name').innerText = song.name;
+
+  // 这里应该加载真实音频，目前模拟
+  STATE.musicPlaying = true;
+  document.getElementById('mp-play-btn').innerText = '⏸';
+  document.getElementById('mp-disc').classList.add('playing');
+
+  renderPlaylist();
+  document.getElementById('mp-playlist-box').style.display = 'none';
+}
+
+window.toggleMusic = function() {
+  STATE.musicPlaying = !STATE.musicPlaying;
+
+  const btn = document.getElementById('mp-play-btn');
+  const disc = document.getElementById('mp-disc');
+
+  if (STATE.musicPlaying) {
+    btn.innerText = '⏸';
+    disc.classList.add('playing');
+  } else {
+    btn.innerText = '▶';
+    disc.classList.remove('playing');
+  }
+};
+
+window.prevSong = function() {
+  if (STATE.playlistIndex > 0) {
+    playSong(STATE.playlistIndex - 1);
+  }
+};
+
+window.nextSong = function() {
+  if (STATE.musicMode === 'single') {
+    playSong(STATE.playlistIndex);
+  } else if (STATE.musicMode === 'shuffle') {
+    const idx = Math.floor(Math.random() * STATE.playlist.length);
+    playSong(idx);
+  } else {
+    const next = (STATE.playlistIndex + 1) % STATE.playlist.length;
+    playSong(next);
+  }
+};
+
+window.switchMode = function() {
+  const modes = ['loop', 'shuffle', 'single'];
+  const icons = ['🔁', '🔀', '🔂'];
+  const current = modes.indexOf(STATE.musicMode);
+  const next = (current + 1) % modes.length;
+
+  STATE.musicMode = modes[next];
+  document.getElementById('mp-mode-btn').innerText = icons[next];
+};
+
+window.togglePlaylist = function() {
+  const box = document.getElementById('mp-playlist-box');
+  box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
+};
+
+window.toggleLyrics = function() {
+  const lyrics = document.getElementById('wc-float-lyrics');
+  lyrics.style.display = lyrics.style.display === 'flex' ? 'none' : 'flex';
+
+  initLyricsDrag();
+};
+
+function initLyricsDrag() {
+  const lyrics = document.getElementById('wc-float-lyrics');
+  let isDragging = false;
+  let startX, startY, initialX, initialY;
+
+  lyrics.addEventListener('touchstart', e => {
+    isDragging = true;
+    const touch = e.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+
+    const rect = lyrics.getBoundingClientRect();
+    initialX = rect.left;
+    initialY = rect.top;
+  });
+
+  document.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - startX;
+    const deltaY = touch.clientY - startY;
+
+    lyrics.style.left = (initialX + deltaX) + 'px';
+    lyrics.style.top = (initialY + deltaY) + 'px';
+    lyrics.style.transform = 'none';
+  });
+
+  document.addEventListener('touchend', () => {
+    isDragging = false;
+  });
+}
+
+window.updateMusicProgress = function() {
+  const audio = document.getElementById('real-audio');
+  if (!audio) return;
+
+  const current = audio.currentTime;
+  const duration = audio.duration;
+
+  if (duration) {
+    const percent = (current / duration) * 100;
+    document.getElementById('mp-bar').style.width = percent + '%';
+    document.getElementById('mp-t-cur').innerText = formatTime(current);
+    document.getElementById('mp-t-dur').innerText = formatTime(duration);
+  }
+};
+
+window.seekMusic = function(e) {
+  const audio = document.getElementById('real-audio');
+  const wrap = document.getElementById('mp-prog-wrap');
+  const rect = wrap.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const percent = x / rect.width;
+
+  if (audio.duration) {
+    audio.currentTime = audio.duration * percent;
+  }
+};
+
+window.clickSearchIcon = function() {
+  document.getElementById('mp-search-input').focus();
+};
+
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
+// ==================== 设置功能 ====================
+window.openSettings = function() {
+  document.getElementById('p-settings').style.display = 'flex';
+};
+
+window.saveSettings = function() {
+  // 保存设置到 localStorage
+  console.log('Settings saved');
+};
+
+window.sSearch = function() {
+  document.getElementById('wc-search-layer').style.display = 'flex';
+};
+
+window.handleSearch = function(query) {
+  const results = document.getElementById('wc-search-results');
+  results.innerHTML = '';
+
+  if (!query || !STATE.currentChat) return;
+
+  const msgs = DATA.messages[STATE.currentChat.id] || [];
+  const filtered = msgs.filter(m =>
+    m.type === 'text' && m.content.toLowerCase().includes(query.toLowerCase())
+  );
+
+  filtered.forEach(msg => {
+    const item = document.createElement('div');
+    item.className = 'wc-list-item';
+    item.innerHTML = `<div class="wc-info"> <div class="wc-name">${msg.isMe ? '我' : STATE.currentChat.name}</div> <div class="wc-last-msg">${msg.content}</div> </div> <div class="wc-time">${msg.time}</div>`;
+    results.appendChild(item);
+  });
+};
+
+window.sLinkGroup = function() {
+  alert('关联群聊功能开发中…');
+};
+
+window.sClear = function() {
+  if (!confirm('确定清空聊天记录?')) return;
+
+  if (STATE.currentChat) {
+    DATA.messages[STATE.currentChat.id] = [];
+    loadMessages(STATE.currentChat.id);
+  }
+};
+
+window.sDelete = function() {
+  if (!confirm('确定删除该聊天?')) return;
+
+  if (STATE.currentChat) {
+    delete DATA.messages[STATE.currentChat.id];
+    window.closeChat();
+  }
+};
+
+window.updateCssPreview = function() {
+  const css = document.getElementById('css-input-area').value;
+  const them = document.getElementById('demo-bubble-them');
+
+  if (them && css) {
+    them.style.cssText += css;
+  }
+};
+
+window.toggleFootprint = function() {
+  const panel = document.getElementById('p-foot');
+  panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+
+  // 显示足迹信息
+  panel.innerHTML = `<div style="padding:15px;"> <div style="font-size:14px; font-weight:bold; margin-bottom:10px;">聊天足迹</div> <div style="font-size:12px; color:#666;"> <div>总消息数: ${(DATA.messages[STATE.currentChat?.id] || []).length}</div> <div>今日消息: 0</div> <div>连续聊天: 1 天</div> </div> </div>`;
+};
+
+// ==================== 好友资料 ====================
+function openProfile(contact) {
+  const page = document.getElementById('p-profile');
+  page.style.display = 'flex';
+
+  document.getElementById('pf-name').value = contact.name;
+  document.getElementById('pf-alias').value = contact.alias || '';
+  document.getElementById('pf-desc').value = contact.desc || '';
+  document.getElementById('pf-sign').value = contact.sign || '';
+
+  const av = document.getElementById('pf-av');
+  if (av) av.style.backgroundImage = `url(${contact.avatar || ''})`;
+
+  STATE.currentProfile = contact;
+}
+
+window.saveProfile = function() {
+  if (!STATE.currentProfile) return;
+
+  STATE.currentProfile.name = document.getElementById('pf-name').value;
+  STATE.currentProfile.alias = document.getElementById('pf-alias').value;
+  STATE.currentProfile.desc = document.getElementById('pf-desc').value;
+  STATE.currentProfile.sign = document.getElementById('pf-sign').value;
+
+  saveContacts();
+  renderChatList();
+  renderContactList();
+
+  alert('资料已保存');
+  document.getElementById('p-profile').style.display = 'none';
+};
+
+window.deleteFriend = function() {
+  if (!confirm('确定删除该好友?')) return;
+
+  DATA.contacts = DATA.contacts.filter(c => c.id !== STATE.currentProfile.id);
+  saveContacts();
+  renderChatList();
+  renderContactList();
+
+  document.getElementById('p-profile').style.display = 'none';
+};
+
+window.mockLocate = function() {
+  const input = document.getElementById('d-loc-input').value;
+  if (!input) {
+    alert('请输入地点');
+    return;
+  }
+
+  // 模拟定位
+  const card = document.getElementById('d-loc-card');
+  const display = document.getElementById('d-loc-display');
+  const coords = document.getElementById('d-loc-coords');
+
+  display.innerText = input;
+  coords.innerText = `${(Math.random() * 90).toFixed(6)}°N, ${(Math.random() * 180).toFixed(6)}°E`;
+
+  card.style.display = 'block';
+};
+
+// ==================== 微信菜单 ====================
+window.wcToggleMenu = function(e) {
+  e.stopPropagation();
+  const menu = document.getElementById('wc-menu');
+  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+
+  document.addEventListener('click', () => {
+    menu.style.display = 'none';
+  }, { once: true });
+};
+
+window.wcShowAdd = function() {
+  document.getElementById('wc-menu').style.display = 'none';
+  document.getElementById('wc-modal-add').style.display = 'flex';
+};
+
+window.wcHideAdd = function() {
+  document.getElementById('wc-modal-add').style.display = 'none';
+};
+
+window.wcConfirmAdd = function() {
+  const name = document.getElementById('wc-new-name').value;
+  if (!name) {
+    alert('请输入好友备注');
+    return;
+  }
+
+  const newContact = {
+    id: 'c' + Date.now(),
+    name: name,
+    avatar: localStorage.getItem('img_wc-new-av') || '',
+    lastMsg: '',
+    time: '',
+    pinned: false
+  };
+
+  DATA.contacts.push(newContact);
+  saveContacts();
+  renderChatList();
+  renderContactList();
+
+  document.getElementById('wc-new-name').value = '';
+  document.getElementById('wc-modal-add').style.display = 'none';
+
+  showToast('好友添加成功!');
+};
+
+window.wcShowNewChat = function() {
+  document.getElementById('wc-menu').style.display = 'none';
+
+  const select = document.getElementById('wc-friend-select');
+  select.innerHTML = '';
+
+  DATA.contacts.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'wc-sel-item';
+    item.innerHTML = `<div class="wc-sel-check"></div> <div class="c-av-small" style="background-image:url(${c.avatar})"></div> <div class="c-name-text">${c.name}</div>`;
+    item.addEventListener('click', () => {
+      item.classList.toggle('selected');
+    });
+    select.appendChild(item);
+  });
+
+  document.getElementById('wc-modal-chat').style.display = 'flex';
+};
+
+window.wcConfirmChat = function() {
+  alert('群聊功能开发中…');
+  document.getElementById('wc-modal-chat').style.display = 'none';
+};
+
+// ==================== 设置应用 ====================
+function loadSettingsMenu() {
+  const body = document.getElementById('sa-body');
+  body.innerHTML = `
+    <div class="sa-section-title">外观</div>
+    <div class="sa-group">
+      <div class="sa-row sa-arrow" onclick="openWallpaperSettings()">
+        <div class="sa-label">壁纸设置</div>
+      </div>
+      <div class="sa-row sa-arrow" onclick="openIconSettings()">
+        <div class="sa-label">图标设置</div>
+      </div>
+    </div>
+
+    <div class="sa-section-title">系统</div>
+    <div class="sa-group">
+      <div class="sa-row">
+        <div class="sa-label">暗黑模式</div>
+        <div class="sa-switch" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="sa-row">
+        <div class="sa-label">自动保存</div>
+        <div class="sa-switch on" onclick="this.classList.toggle('on')"></div>
+      </div>
+    </div>
+
+    <div class="sa-section-title">关于</div>
+    <div class="sa-group">
+      <div class="sa-row">
+        <div class="sa-label">版本</div>
+        <div class="sa-value">v15.4</div>
+      </div>
+      <div class="sa-row sa-arrow">
+        <div class="sa-label">检查更新</div>
+      </div>
+    </div>
+
+    <div class="sa-group" style="margin-top:30px;">
+      <div class="sa-row" onclick="resetAll()">
+        <div class="sa-label" style="color:#fa5151; text-align:center; width:100%;">重置所有数据</div>
+      </div>
+    </div>
+  `;
+}
+
+function openWallpaperSettings() {
+  const body = document.getElementById('sa-body');
+  body.innerHTML = `
+    <div class="sa-section-title">锁屏壁纸</div>
+    <div class="sa-group">
+      <div class="wallpaper-preview-container">
+        <div class="wallpaper-preview-box" id="l-pre" onclick="pick('f-global-wall')">
+          <div style="color:#ccc;">点击上传</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sa-section-title">桌面壁纸</div>
+    <div class="sa-group">
+      <div class="sa-row sa-arrow" onclick="pick('f-i-p-wall')">
+        <div class="sa-label">第一页壁纸</div>
+      </div>
+      <div class="sa-row sa-arrow" onclick="pick('f-p2bg')">
+        <div class="sa-label">第二页背景</div>
+      </div>
+    </div>
+  `;
+
+  // 加载预览
+  const preview = document.getElementById('l-pre');
+  const saved = localStorage.getItem('img_f-global-wall');
+  if (saved && preview) {
+    preview.style.backgroundImage = `url(${saved})`;
+  }
+}
+
+function openIconSettings() {
+  const body = document.getElementById('sa-body');
+  body.innerHTML = `<div class="sa-section-title">应用图标</div> <div class="sa-group"> ${generateIconSettings()} </div>`;
+}
+
+function generateIconSettings() {
+  const icons = [
+    { id: 'wechat', name: '微信' },
+    { id: 'weibo', name: '微博' },
+    { id: 'music', name: '音乐' },
+    { id: 'settings', name: '设置' }
+  ];
+
+  return icons.map(icon => `<div class="sa-row" style="flex-direction:column; align-items:center; padding:20px;"> <div class="icon-preview" id="prev-${icon.id}" onclick="pick('f-icon-${icon.id}')"></div> <div style="margin-top:10px; font-size:12px; color:#666;">${icon.name}</div> </div>`).join('');
+}
+
+function resetAll() {
+  if (!confirm('确定重置所有数据? 此操作不可恢复!')) return;
+
+  localStorage.clear();
+  location.reload();
+}
+
+// ==================== 数据持久化 ====================
+function saveContacts() {
+  localStorage.setItem('wc_contacts', JSON.stringify(DATA.contacts));
+}
+
+function loadUserData() {
+  // 加载用户文本
+  const textKeys = ['lkp', 'n1', 'n2', 'n3', 'dl1', 'dl2', 'dl3', 'mt1', 'mt2',
+    'p1-msg1', 'p1-msg2', 'p2bio', 'p2loc', 'me-nickname', 'me-wx-id', 'me-status'];
+
+  textKeys.forEach(key => {
+    const saved = localStorage.getItem(`u_${key}`);
+    const el = document.getElementById(key);
+    if (saved && el) el.innerText = saved;
+  });
+
+  // 加载用户信息
+  const savedUser = localStorage.getItem('user_info');
+  if (savedUser) {
+    Object.assign(DATA.userInfo, JSON.parse(savedUser));
+  }
+}
+
+// ==================== 工具函数 ====================
+function closeTransfer() {
+  document.getElementById('wc-transfer-modal').style.display = 'none';
+}
+
+function confirmReceive() {
+  alert('收款成功!');
+  closeTransfer();
+}
+
+function confirmRefund() {
+  if (confirm('确定退还转账?')) {
+    alert('已退还');
+    closeTransfer();
+  }
+}
+
+// ==================== 全局事件监听 ====================
+document.addEventListener('click', e => {
+  // 关闭所有打开的面板
+  const panels = document.querySelectorAll('.c-panel.open');
+  if (!e.target.closest('.c-panel') && !e.target.closest('#btn-plus')) {
+    panels.forEach(p => p.classList.remove('open'));
+  }
+});
+
+console.log('🐱 Molly OS v15.4 已加载');
    </script>
-    </body>
+   </body>
     </html>
