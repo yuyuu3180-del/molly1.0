@@ -65,7 +65,7 @@ html,body{
 
 .top-nav{
     position:absolute;
-    top:calc(env(safe-area-inset-top,47px)+5px);
+    top:calc(env(safe-area-inset-top,47px)+15px);    /* 加大间距，避免和状态栏重叠 */
     left:0;width:100%;padding:0 20px;
     display:flex;justify-content:space-between;align-items:flex-start;z-index:1000;
     pointer-events:none;
@@ -86,10 +86,11 @@ html,body{
     flex:1;
     position:relative;
     width:100%;
-    margin-top:calc(env(safe-area-inset-top,47px)+10px);
+    margin-top:calc(env(safe-area-inset-top,47px)+20px);    /* 加大 */
     margin-bottom:0;
     overflow:hidden;
 }
+
 
 /* ===== App/Widget ===== */
 .app-item,.widget-item{position:absolute;z-index:10;transition:transform 0.2s,left 0.3s,top 0.3s}
@@ -159,7 +160,7 @@ html,body{
     flex-shrink:0;
     height:95px;
     margin:0 20px;
-    margin-bottom:calc(env(safe-area-inset-bottom,34px)+5px);
+    margin-bottom:8px;    /* 改这里！去掉 env(safe-area-inset-bottom) */
     background:rgba(255,255,255,0.4);border-radius:32px;
     display:flex;justify-content:space-around;align-items:center;
     backdrop-filter:blur(10px);z-index:200;
@@ -168,7 +169,7 @@ html,body{
     flex-shrink:0;
     height:5px;width:130px;
     background:rgba(0,0,0,0.1);border-radius:10px;
-    margin:0 auto 8px;
+    margin:0 auto 3px;    /* 改这里！ */
     cursor:pointer;z-index:300;
 }
 
