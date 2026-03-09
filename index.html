@@ -25,6 +25,7 @@
 
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 
+/* ===== 全屏核心：不设背景色，absolute四边归零 ===== */
 html,body{
     width:100%;height:100%;
     overflow:hidden;
@@ -39,26 +40,32 @@ html,body{
     overflow:hidden;
 }
 
+/* ===== 锁屏 ===== */
 #lock-screen{
     position:absolute;top:0;left:0;width:100%;height:100%;z-index:100;
-    display:flex;flex-direction:column;align-items:center;justify-content:space-between;
-    padding-top:max(100px,calc(env(safe-area-inset-top,50px)+50px));
-    padding-bottom:max(30px,calc(env(safe-area-inset-bottom,10px)+20px));
-    background-color:rgba(200,200,210,0.3);
+    display:flex;flex-direction:column;align-items:center;
+    justify-content:center;
+    background-color:rgba(210,210,215,0.95);
     background-size:cover;background-position:center;
     transition:transform 0.4s cubic-bezier(0.2,1,0.2,1);
     touch-action:none;
 }
+.lock-clock{font-size:72px;font-weight:200;color:#333;margin-bottom:4px}
+.lock-date{color:#555;font-size:16px;margin-bottom:60px}
+.lock-hint{position:absolute;bottom:calc(env(safe-area-inset-bottom,34px)+10px);color:#888;font-size:14px;font-weight:500}
 
+/* ===== 桌面 ===== */
 #home-screen{
     position:absolute;top:0;left:0;width:100%;height:100%;z-index:50;
     background:var(--glass);
     backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
     background-size:cover;background-position:center;
+    display:flex;flex-direction:column;
 }
 
 .top-nav{
-    position:absolute;top:max(50px,calc(env(safe-area-inset-top,0px)+10px));
+    position:absolute;
+    top:calc(env(safe-area-inset-top,47px)+5px);
     left:0;width:100%;padding:0 20px;
     display:flex;justify-content:space-between;align-items:flex-start;z-index:1000;
     pointer-events:none;
@@ -74,14 +81,17 @@ html,body{
 #diy-btn{background:var(--bunny-pink);color:white}
 #done-btn{pointer-events:auto;background:#333;color:white}
 
+/* 桌面内容区：用 flex 撑开，上下留空间给状态栏和 dock */
 .desktop-content{
-    position:absolute;
-    top:max(90px,calc(env(safe-area-inset-top,0px)+60px));
-    left:0;right:0;
-    bottom:calc(env(safe-area-inset-bottom,20px)+115px);
+    flex:1;
+    position:relative;
+    width:100%;
+    margin-top:calc(env(safe-area-inset-top,47px)+10px);
+    margin-bottom:0;
     overflow:hidden;
 }
 
+/* ===== App/Widget ===== */
 .app-item,.widget-item{position:absolute;z-index:10;transition:transform 0.2s,left 0.3s,top 0.3s}
 .app-item{width:var(--cell-w);height:var(--cell-h);display:flex;flex-direction:column;align-items:center;justify-content:center}
 
@@ -96,6 +106,7 @@ html,body{
 .app-name{font-size:clamp(10px,2.5vw,12px);margin-top:6px;color:#444;font-weight:500;pointer-events:none;text-shadow:0 1px 2px rgba(255,255,255,0.8)}
 .widget-item{border-radius:28px;box-shadow:0 10px 30px rgba(0,0,0,0.08);overflow:hidden;background:#fff}
 
+/* ===== 灵动岛 ===== */
 .widget-island{
     width:120px;height:30px;
     background:var(--island-bg);border-radius:20px;
@@ -120,9 +131,8 @@ html,body{
 @keyframes sound{0%{height:30%}100%{height:100%}}
 
 .icon-svg{width:20px;height:20px;fill:currentColor}
-.icon-btn{cursor:pointer;opacity:0.9;transition:transform 0.1s}
-.icon-btn:active{transform:scale(0.85)}
 
+/* ===== 推特组件 ===== */
 .widget-twitter{width:calc(var(--cell-w)*2 - 12px);height:calc(var(--cell-h)*2 - 12px)}
 .tw-header{height:40%;background:#eee center/cover;cursor:pointer}
 .tw-content{position:relative;padding:8px 12px;display:flex;flex-direction:column;height:60%}
@@ -132,6 +142,7 @@ html,body{
 .tw-handle{font-size:11px;color:#536471}
 .tw-bio{font-size:clamp(10px,2.5vw,11px);color:#333;margin-top:auto;margin-bottom:5px;opacity:0.9;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;outline:none}
 
+/* ===== 编辑模式 ===== */
 .remove-btn{
     position:absolute;top:-8px;left:-8px;width:28px;height:28px;
     background:var(--delete-red);color:white;border-radius:50%;
@@ -143,22 +154,25 @@ html,body{
 .dragging{z-index:1000!important;transform:scale(1.05)!important;opacity:0.9;transition:none!important}
 @keyframes shake{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
 
+/* ===== Dock ===== */
 .dock-container{
-    position:absolute;
-    bottom:calc(env(safe-area-inset-bottom,20px)+10px);
-    left:20px;right:20px;height:95px;
+    flex-shrink:0;
+    height:95px;
+    margin:0 20px;
+    margin-bottom:calc(env(safe-area-inset-bottom,34px)+5px);
     background:rgba(255,255,255,0.4);border-radius:32px;
     display:flex;justify-content:space-around;align-items:center;
     backdrop-filter:blur(10px);z-index:200;
 }
 .home-bar{
-    position:absolute;
-    bottom:calc(env(safe-area-inset-bottom,8px)+2px);
-    left:50%;transform:translateX(-50%);
-    width:130px;height:5px;background:rgba(0,0,0,0.1);
-    border-radius:10px;cursor:pointer;z-index:300;
+    flex-shrink:0;
+    height:5px;width:130px;
+    background:rgba(0,0,0,0.1);border-radius:10px;
+    margin:0 auto 8px;
+    cursor:pointer;z-index:300;
 }
 
+/* ===== 面板 ===== */
 .bottom-panel{
     position:absolute;bottom:-100%;left:0;width:100%;height:75%;
     background:rgba(255,255,255,0.98);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
@@ -180,24 +194,16 @@ html,body{
 
 .app-edit-grid{display:flex;flex-wrap:wrap;gap:15px}
 .app-edit-item{display:flex;flex-direction:column;align-items:center;width:60px;cursor:pointer}
-.app-edit-icon{
-    width:55px;height:55px;background:#fff;border-radius:14px;
-    display:flex;justify-content:center;align-items:center;font-size:24px;
-    border:1px solid #eee;background-size:cover;background-position:center;
-}
+.app-edit-icon{width:55px;height:55px;background:#fff;border-radius:14px;display:flex;justify-content:center;align-items:center;font-size:24px;border:1px solid #eee;background-size:cover;background-position:center}
 .app-edit-name{font-size:10px;margin-top:5px;color:#666;text-align:center}
 
 #db-loading{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.9);z-index:9999;display:flex;justify-content:center;align-items:center;font-weight:bold;color:#555;pointer-events:none;opacity:0;transition:opacity 0.5s}
 #db-loading.show{opacity:1;pointer-events:auto}
 
-.upload-btn-large{
-    width:100%;padding:15px;background:#f0f0f0;border-radius:15px;border:2px dashed #ccc;
-    text-align:center;cursor:pointer;color:#666;font-size:13px;margin-top:10px;
-    display:flex;align-items:center;justify-content:center;gap:10px;
-}
+.upload-btn-large{width:100%;padding:15px;background:#f0f0f0;border-radius:15px;border:2px dashed #ccc;text-align:center;cursor:pointer;color:#666;font-size:13px;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:10px}
 .upload-btn-large:active{background:#e5e5e5}
 
-/* ===== App Overlay - 和其他元素一样用 absolute ===== */
+/* ===== App Overlay ===== */
 #app-overlay{
     position:absolute;
     top:0;left:0;right:0;bottom:0;
@@ -219,14 +225,14 @@ html,body{
         <iframe id="app-iframe" src="" allowfullscreen></iframe>
     </div>
 
+    <!-- 锁屏 -->
     <div id="lock-screen">
-        <div style="text-align:center;pointer-events:none">
-            <h1 id="clock" style="font-size:80px;font-weight:200;color:#333">20:45</h1>
-            <p id="date-str" style="color:#555">3月3日 星期二</p>
-        </div>
-        <p style="color:#666;font-weight:500">↑ 向上滑动解锁</p>
+        <h1 id="clock" class="lock-clock">20:45</h1>
+        <p id="date-str" class="lock-date">3月3日 星期二</p>
+        <p class="lock-hint">↑ 向上滑动解锁</p>
     </div>
 
+    <!-- 桌面：用 flex 纵向排列 -->
     <div id="home-screen">
         <div class="top-nav">
             <div class="nav-left-group">
@@ -235,7 +241,11 @@ html,body{
             </div>
             <button class="nav-btn" id="done-btn">完成</button>
         </div>
+
+        <!-- 桌面内容区 flex:1 自动撑满中间 -->
         <div class="desktop-content" id="desktop"></div>
+
+        <!-- Dock 在 flex 底部 -->
         <div class="dock-container">
             <div class="app-icon" data-dock-id="dock-phone">📞</div>
             <div class="app-icon" data-dock-id="dock-msg">💬</div>
@@ -245,6 +255,7 @@ html,body{
         <div class="home-bar" id="to-lock"></div>
     </div>
 
+    <!-- 组件面板 -->
     <div id="widget-panel" class="bottom-panel">
         <h2 style="text-align:center;font-size:20px;margin-bottom:20px">组件中心</h2>
         <div class="section-title">特别推荐</div>
@@ -258,6 +269,7 @@ html,body{
         <button class="close-panel-btn" onclick="closePanels()">返回桌面</button>
     </div>
 
+    <!-- DIY面板 -->
     <div id="diy-panel" class="bottom-panel">
         <h2 style="text-align:center;font-size:20px;margin-bottom:10px">🐰 小兔 DIY</h2>
         <div class="section-title">终极系统备份 (桌面 + Chat)</div>
@@ -290,37 +302,33 @@ html,body{
 <audio id="bg-audio" playsinline style="display:none"></audio>
 
 <script>
-/* ===== 没有任何 JS 高度计算！纯 CSS 撑满 ===== */
-
-const DB_NAME='Rabbit_Ultra_Island_V15_LocalAudio';
-const DB_STORE='layout_data';
+const DB_NAME='Rabbit_Ultra_Island_V15_LocalAudio',DB_STORE='layout_data';
 let db,globalImageCache={},customAppIcons={},activeEditType='',activeAppId='',islandAudioUrl='';
 
-function initDB(){return new Promise((resolve,reject)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains(DB_STORE))e.target.result.createObjectStore(DB_STORE)};r.onsuccess=e=>{db=e.target.result;resolve(db)};r.onerror=e=>reject(e)})}
+function initDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains(DB_STORE))e.target.result.createObjectStore(DB_STORE)};r.onsuccess=e=>{db=e.target.result;res(db)};r.onerror=e=>rej(e)})}
 function saveToDB(k,v){return new Promise(r=>{if(!db)return r();const t=db.transaction(DB_STORE,'readwrite');t.objectStore(DB_STORE).put(v,k);t.oncomplete=()=>r();t.onerror=()=>r()})}
 function getFromDB(k){return new Promise(r=>{if(!db)return r(null);const t=db.transaction(DB_STORE,'readonly');const q=t.objectStore(DB_STORE).get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r(null)})}
 
-const desktop=document.getElementById('desktop');
-const lockScreen=document.getElementById('lock-screen');
-const phoneWrapper=document.getElementById('phone-wrapper');
-const widgetPanel=document.getElementById('widget-panel');
-const diyPanel=document.getElementById('diy-panel');
-const appStoreGrid=document.getElementById('app-store-grid');
-const appDiyGrid=document.getElementById('app-diy-grid');
-const imgInput=document.getElementById('image-input');
-const audioFileInput=document.getElementById('audio-input');
-const loading=document.getElementById('db-loading');
-const addBtn=document.getElementById('add-widget-btn');
-const diyBtn=document.getElementById('diy-btn');
-const doneBtn=document.getElementById('done-btn');
-const audioEl=document.getElementById('bg-audio');
-const audioText=document.getElementById('audio-upload-text');
+const desktop=document.getElementById('desktop'),
+lockScreen=document.getElementById('lock-screen'),
+phoneWrapper=document.getElementById('phone-wrapper'),
+widgetPanel=document.getElementById('widget-panel'),
+diyPanel=document.getElementById('diy-panel'),
+appStoreGrid=document.getElementById('app-store-grid'),
+appDiyGrid=document.getElementById('app-diy-grid'),
+imgInput=document.getElementById('image-input'),
+audioFileInput=document.getElementById('audio-input'),
+loading=document.getElementById('db-loading'),
+addBtn=document.getElementById('add-widget-btn'),
+diyBtn=document.getElementById('diy-btn'),
+doneBtn=document.getElementById('done-btn'),
+audioEl=document.getElementById('bg-audio'),
+audioText=document.getElementById('audio-upload-text');
 
-let CELL_W,CELL_H;
-const layoutMarginX=15;
+let CELL_W,CELL_H,layoutMarginX=15;
 function updateGridSize(){
-    const phoneW=phoneWrapper.clientWidth||window.innerWidth;
-    CELL_W=Math.floor((phoneW-layoutMarginX*2)/4);
+    const w=phoneWrapper.clientWidth||window.innerWidth;
+    CELL_W=Math.floor((w-layoutMarginX*2)/4);
     CELL_H=Math.floor(CELL_W*1.15);
     document.documentElement.style.setProperty('--cell-w',CELL_W+'px');
     document.documentElement.style.setProperty('--cell-h',CELL_H+'px');
@@ -339,347 +347,215 @@ function refreshAllPositions(){
 let isEditing=false,activeEl=null,currentImgKey=null;
 
 const APP_DATABASE={
-    'app-gallery':{name:'相册',icon:'🎨'},
-    'app-music':{name:'音乐',icon:'🎵'},
-    'app-settings':{name:'设置',icon:'⚙️'},
-    'app-camera':{name:'相机',icon:'📸'},
-    'app-wechat':{name:' Chat',icon:'💬'},
-    'app-jieyou':{name:'解忧杂货铺',icon:'✉️'},
-    'app-fitness':{name:'世界书',icon:'📖'},
-    'app-bunny':{name:'垂耳兔',icon:'🐰'},
-    'dock-phone':{name:'电话',icon:'📞'},
-    'dock-msg':{name:'AI Chat',icon:'💬'},
-    'dock-browser':{name:'浏览',icon:'🌐'},
-    'dock-camera':{name:'拍照',icon:'📷'}
+    'app-gallery':{name:'相册',icon:'🎨'},'app-music':{name:'音乐',icon:'🎵'},
+    'app-settings':{name:'设置',icon:'⚙️'},'app-camera':{name:'相机',icon:'📸'},
+    'app-wechat':{name:'Chat',icon:'💬'},'app-jieyou':{name:'解忧杂货铺',icon:'✉️'},
+    'app-fitness':{name:'世界书',icon:'📖'},'app-bunny':{name:'垂耳兔',icon:'🐰'},
+    'dock-phone':{name:'电话',icon:'📞'},'dock-msg':{name:'AI Chat',icon:'💬'},
+    'dock-browser':{name:'浏览',icon:'🌐'},'dock-camera':{name:'拍照',icon:'📷'}
 };
+const APP_URLS={'app-wechat':'chat.html','dock-msg':'chat.html','app-fitness':'lore.html','app-jieyou':'jieyou.html'};
 
-const APP_URLS={
-    'app-wechat':'chat.html',
-    'dock-msg':'chat.html',
-    'app-fitness':'lore.html',
-    'app-jieyou':'jieyou.html',
-};
-
-function openApp(appId){
-    const url=APP_URLS[appId];
-    if(!url)return;
-    const overlay=document.getElementById('app-overlay');
-    const iframe=document.getElementById('app-iframe');
-    iframe.src=url;
-    overlay.style.display='block';
-    overlay.classList.add('open');
+function openApp(id){
+    const url=APP_URLS[id];if(!url)return;
+    const o=document.getElementById('app-overlay'),f=document.getElementById('app-iframe');
+    f.src=url;o.style.display='block';o.classList.add('open');
 }
 function closeAppOverlay(){
-    const overlay=document.getElementById('app-overlay');
-    const iframe=document.getElementById('app-iframe');
-    overlay.classList.remove('open');
-    overlay.style.display='none';
-    iframe.src='';
+    const o=document.getElementById('app-overlay'),f=document.getElementById('app-iframe');
+    o.classList.remove('open');o.style.display='none';f.src='';
 }
 
 async function exportAll(){
     try{
-        audioText.innerText="正在打包...";
-        await initDB();
-        const layout=await getFromDB('layout');
-        const settings=await getFromDB('settings');
-        const chatDBData={};
+        audioText.innerText="正在打包...";await initDB();
+        const layout=await getFromDB('layout'),settings=await getFromDB('settings'),chatDBData={};
         const chatKeys=['ins_posts_v1','ins_chat_list_v1','ins_chat_messages_v1','ins_chat_thoughts_v1'];
-        const chatDbInstance=await new Promise(res=>{const req=indexedDB.open('InsChatLargeDB',1);req.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains('store'))e.target.result.createObjectStore('store')};req.onsuccess=e=>res(e.target.result)});
-        for(let k of chatKeys){chatDBData[k]=await new Promise(res=>{try{const tx=chatDbInstance.transaction('store','readonly');const r=tx.objectStore('store').get(k);r.onsuccess=()=>res(r.result);r.onerror=()=>res(null)}catch(e){res(null)}})}
+        const cdb=await new Promise(r=>{const q=indexedDB.open('InsChatLargeDB',1);q.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains('store'))e.target.result.createObjectStore('store')};q.onsuccess=e=>r(e.target.result)});
+        for(let k of chatKeys){chatDBData[k]=await new Promise(r=>{try{const t=cdb.transaction('store','readonly');const q=t.objectStore('store').get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r(null)}catch(e){r(null)}})}
         const lsKeys=['me_profile_config_v1','user_region','my_settings_v1','emoji_lib_v2','wl_data_v1','keep_alive_state','worldbook_entries_v1'];
-        const lsData={};
-        lsKeys.forEach(k=>{const v=localStorage.getItem(k);if(v)lsData[k]=v});
+        const lsData={};lsKeys.forEach(k=>{const v=localStorage.getItem(k);if(v)lsData[k]=v});
         const blob=new Blob([JSON.stringify({type:"full_phone_backup",timestamp:Date.now(),desktop:{layout,settings},chat_db:chatDBData,chat_ls:lsData})],{type:'application/json'});
-        const link=document.createElement('a');
-        link.href=URL.createObjectURL(blob);
-        link.download=`兔兔手机_整机备份_${new Date().toLocaleDateString().replace(/\//g,'-')}.json`;
-        document.body.appendChild(link);link.click();document.body.removeChild(link);
-        audioText.innerText="点击选择 MP3 文件...";
-        alert('✅ 整机备份已导出！');
+        const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`兔兔手机备份_${new Date().toLocaleDateString().replace(/\//g,'-')}.json`;
+        document.body.appendChild(a);a.click();document.body.removeChild(a);
+        audioText.innerText="点击选择 MP3 文件...";alert('✅ 整机备份已导出！');
     }catch(e){console.error(e);alert('导出失败')}
 }
-
 async function importAll(e){
     const file=e.target.files[0];if(!file)return;
     const reader=new FileReader();
-    reader.onload=async(ev)=>{
+    reader.onload=async ev=>{
         try{
-            const data=JSON.parse(ev.target.result);
-            if(data.type==="full_phone_backup"){
-                await initDB();
-                if(data.desktop.layout)await saveToDB('layout',data.desktop.layout);
-                if(data.desktop.settings)await saveToDB('settings',data.desktop.settings);
-                const cdb=await new Promise(res=>{const r=indexedDB.open('InsChatLargeDB',1);r.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains('store'))e.target.result.createObjectStore('store')};r.onsuccess=e=>res(e.target.result)});
-                if(data.chat_db){for(let k in data.chat_db){if(data.chat_db[k])await new Promise(res=>{const tx=cdb.transaction('store','readwrite');tx.objectStore('store').put(data.chat_db[k],k);tx.oncomplete=()=>res()})}}
-                if(data.chat_ls){for(let k in data.chat_ls)localStorage.setItem(k,data.chat_ls[k])}
+            const d=JSON.parse(ev.target.result);
+            if(d.type==="full_phone_backup"){
+                await initDB();if(d.desktop.layout)await saveToDB('layout',d.desktop.layout);if(d.desktop.settings)await saveToDB('settings',d.desktop.settings);
+                const cdb=await new Promise(r=>{const q=indexedDB.open('InsChatLargeDB',1);q.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains('store'))e.target.result.createObjectStore('store')};q.onsuccess=e=>r(e.target.result)});
+                if(d.chat_db){for(let k in d.chat_db){if(d.chat_db[k])await new Promise(r=>{const t=cdb.transaction('store','readwrite');t.objectStore('store').put(d.chat_db[k],k);t.oncomplete=()=>r()})}}
+                if(d.chat_ls){for(let k in d.chat_ls)localStorage.setItem(k,d.chat_ls[k])}
                 alert('✨ 整机恢复成功！');location.reload();
-            }else if(data.layout||data.settings){
-                await initDB();
-                if(data.layout)await saveToDB('layout',data.layout);
-                if(data.settings)await saveToDB('settings',data.settings);
-                alert('✨ 桌面恢复成功！');location.reload();
-            }else{alert('❌ 无效备份文件')}
+            }else if(d.layout||d.settings){await initDB();if(d.layout)await saveToDB('layout',d.layout);if(d.settings)await saveToDB('settings',d.settings);alert('✨ 桌面恢复成功！');location.reload()}
+            else{alert('❌ 无效备份文件')}
         }catch(err){alert('❌ 文件解析错误')}
-    };
-    reader.readAsText(file);e.target.value='';
+    };reader.readAsText(file);e.target.value='';
 }
 
 async function saveLayout(){
     const items=[];
     desktop.querySelectorAll('.app-item,.widget-item').forEach(el=>{
-        const item={id:el.dataset.id,type:el.dataset.type,col:el.dataset.col,row:el.dataset.row};
-        if(item.type==='twitter'){item.data={bg:globalImageCache[item.id+'_bg'],avatar:globalImageCache[item.id+'_avatar'],name:el.querySelector('.tw-name').innerText,handle:el.querySelector('.tw-handle').innerText,bio:el.querySelector('.tw-bio').innerText}}
-        else if(item.type==='island'){item.data={avatar:globalImageCache[item.id+'_island'],title:el.querySelector('.island-title').innerText,subtitle:el.querySelector('.island-subtitle').innerText}}
-        items.push(item);
+        const it={id:el.dataset.id,type:el.dataset.type,col:el.dataset.col,row:el.dataset.row};
+        if(it.type==='twitter')it.data={bg:globalImageCache[it.id+'_bg'],avatar:globalImageCache[it.id+'_avatar'],name:el.querySelector('.tw-name').innerText,handle:el.querySelector('.tw-handle').innerText,bio:el.querySelector('.tw-bio').innerText};
+        else if(it.type==='island')it.data={avatar:globalImageCache[it.id+'_island'],title:el.querySelector('.island-title').innerText,subtitle:el.querySelector('.island-subtitle').innerText};
+        items.push(it);
     });
     await saveToDB('layout',items);
-    const settings={lockBg:globalImageCache['wallpaper_lock'],homeBg:globalImageCache['wallpaper_home'],customIcons:customAppIcons};
-    for(let id in customAppIcons)settings['icon_img_'+id]=globalImageCache['icon_'+id];
-    await saveToDB('settings',settings);
+    const s={lockBg:globalImageCache['wallpaper_lock'],homeBg:globalImageCache['wallpaper_home'],customIcons:customAppIcons};
+    for(let id in customAppIcons)s['icon_img_'+id]=globalImageCache['icon_'+id];
+    await saveToDB('settings',s);
 }
 
 async function loadLayout(){
     try{
-        await initDB();
-        const savedLayout=await getFromDB('layout');
-        const savedSettings=await getFromDB('settings');
-        const audioBlob=await getFromDB('island_audio_blob');
+        await initDB();const sl=await getFromDB('layout'),ss=await getFromDB('settings'),ab=await getFromDB('island_audio_blob');
         loading.classList.remove('show');
-        if(savedSettings){
-            if(savedSettings.lockBg){globalImageCache['wallpaper_lock']=savedSettings.lockBg;lockScreen.style.backgroundImage=savedSettings.lockBg;document.getElementById('wp-lock-preview').style.backgroundImage=savedSettings.lockBg}
-            if(savedSettings.homeBg){globalImageCache['wallpaper_home']=savedSettings.homeBg;document.getElementById('home-screen').style.backgroundImage=savedSettings.homeBg;document.getElementById('wp-home-preview').style.backgroundImage=savedSettings.homeBg}
-            if(savedSettings.customIcons){customAppIcons=savedSettings.customIcons;for(let id in customAppIcons)globalImageCache['icon_'+id]=savedSettings['icon_img_'+id]}
+        if(ss){
+            if(ss.lockBg){globalImageCache['wallpaper_lock']=ss.lockBg;lockScreen.style.backgroundImage=ss.lockBg;document.getElementById('wp-lock-preview').style.backgroundImage=ss.lockBg}
+            if(ss.homeBg){globalImageCache['wallpaper_home']=ss.homeBg;document.getElementById('home-screen').style.backgroundImage=ss.homeBg;document.getElementById('wp-home-preview').style.backgroundImage=ss.homeBg}
+            if(ss.customIcons){customAppIcons=ss.customIcons;for(let id in customAppIcons)globalImageCache['icon_'+id]=ss['icon_img_'+id]}
         }
-        if(audioBlob){islandAudioUrl=URL.createObjectURL(audioBlob);audioText.innerText="已加载本地 MP3"}
+        if(ab){islandAudioUrl=URL.createObjectURL(ab);audioText.innerText="已加载本地 MP3"}
         ['dock-phone','dock-msg','dock-browser','dock-camera'].forEach(id=>{
             const el=document.querySelector(`.app-icon[data-dock-id="${id}"]`);
             if(el&&customAppIcons[id]&&globalImageCache['icon_'+id]){el.innerText='';el.style.backgroundImage=globalImageCache['icon_'+id]}
         });
         desktop.innerHTML='';
-        if(savedLayout&&savedLayout.length>0){
-            savedLayout.forEach(item=>{
-                if(item.type==='twitter'){globalImageCache[item.id+'_bg']=item.data.bg;globalImageCache[item.id+'_avatar']=item.data.avatar;createTwitterWidget(item.col,item.row,item.id,item.data)}
-                else if(item.type==='island'){globalImageCache[item.id+'_island']=item.data.avatar;createIslandWidget(item.col,item.row,item.id,item.data)}
-                else if(item.type==='music'||item.type==='memo'){/* skip */}
-                else if(item.type==='app'){createAppElement(item.id,item.col,item.row)}
+        if(sl&&sl.length>0){
+            sl.forEach(it=>{
+                if(it.type==='twitter'){globalImageCache[it.id+'_bg']=it.data.bg;globalImageCache[it.id+'_avatar']=it.data.avatar;createTwitterWidget(it.col,it.row,it.id,it.data)}
+                else if(it.type==='island'){globalImageCache[it.id+'_island']=it.data.avatar;createIslandWidget(it.col,it.row,it.id,it.data)}
+                else if(it.type==='music'||it.type==='memo'){}
+                else if(it.type==='app'){createAppElement(it.id,it.col,it.row)}
             });
-        }else{
-            createIslandWidget(1,0,'island-init');
-            createAppElement('app-bunny',2,2);
-            createAppElement('app-jieyou',3,2);
-        }
-        setTimeout(()=>{
-            document.querySelectorAll('.app-item').forEach(el=>{
-                const id=el.dataset.id;
-                if(customAppIcons[id]&&globalImageCache['icon_'+id]){const ic=el.querySelector('.app-icon');ic.innerText='';ic.style.backgroundImage=globalImageCache['icon_'+id]}
-            });
-        },50);
+        }else{createIslandWidget(1,0,'island-init');createAppElement('app-wechat',1,1);createAppElement('app-bunny',2,2);createAppElement('app-jieyou',3,2)}
+        setTimeout(()=>{document.querySelectorAll('.app-item').forEach(el=>{const id=el.dataset.id;if(customAppIcons[id]&&globalImageCache['icon_'+id]){const ic=el.querySelector('.app-icon');ic.innerText='';ic.style.backgroundImage=globalImageCache['icon_'+id]}})},50);
         updateAppStore();updateDiyGrid();
     }catch(e){console.error(e);loading.innerText="出错了"}
 }
 
 function triggerAudioUpload(){audioFileInput.click()}
-audioFileInput.onchange=async(e)=>{const file=e.target.files[0];if(file){audioText.innerText="保存中...";await saveToDB('island_audio_blob',file);islandAudioUrl=URL.createObjectURL(file);audioText.innerText="上传成功！";alert('MP3上传成功！')}};
+audioFileInput.onchange=async e=>{const f=e.target.files[0];if(f){audioText.innerText="保存中...";await saveToDB('island_audio_blob',f);islandAudioUrl=URL.createObjectURL(f);audioText.innerText="上传成功！";alert('MP3上传成功！')}};
 
-function createIslandWidget(col,row,id,data=null){
-    const div=document.createElement('div');
-    div.className='widget-item widget-island';div.dataset.id=id||'island-'+Date.now();div.dataset.type='island';
-    div.style.left='50%';div.style.transform='translateX(-50%)';div.style.top='-8px';
-    const d=data||{title:"垂耳兔",subtitle:"希望垂耳兔小手机可以给你带来快乐^ ^"};
-    div.innerHTML=`<div class="island-content-collapsed"></div><div class="island-content-expanded"><div class="island-avatar"></div><div class="island-text"><div class="island-title" contenteditable="true">${d.title}</div><div class="island-subtitle" contenteditable="true">${d.subtitle}</div></div><div class="island-visualizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div></div><div class="remove-btn">×</div>`;
-    const imgKey=div.dataset.id+'_island';
-    if(globalImageCache[imgKey])div.querySelector('.island-avatar').style.backgroundImage=globalImageCache[imgKey];
-    else{const def="url('https://picsum.photos/seed/handsome/100')";div.querySelector('.island-avatar').style.backgroundImage=def;globalImageCache[imgKey]=def}
-    div.onclick=(e)=>{
-        if(isEditing)return;if(e.target.closest('[contenteditable]')||e.target.classList.contains('remove-btn'))return;
-        div.classList.toggle('expanded');
-        if(div.classList.contains('expanded')){if(islandAudioUrl){audioEl.src=islandAudioUrl;audioEl.load();audioEl.play().catch(()=>{})}}
-        else{audioEl.pause()}
-    };
-    div.querySelector('.island-avatar').onclick=(e)=>{if(!isEditing){e.stopPropagation();activeEditType='widget';currentImgKey=imgKey;imgInput.click()}};
-    document.addEventListener('click',(e)=>{if(!div.contains(e.target)){div.classList.remove('expanded');audioEl.pause()}});
-    div.querySelectorAll('[contenteditable]').forEach(el=>{el.onclick=(e)=>e.stopPropagation();el.onblur=()=>saveLayout()});
-    div.querySelector('.remove-btn').onclick=(e)=>{e.stopPropagation();div.remove();updateAppStore();saveLayout()};
-    desktop.appendChild(div);
+function createIslandWidget(col,row,id,data){
+    const d=document.createElement('div');d.className='widget-item widget-island';d.dataset.id=id||'island-'+Date.now();d.dataset.type='island';
+    d.style.left='50%';d.style.transform='translateX(-50%)';d.style.top='-8px';
+    const dt=data||{title:"垂耳兔",subtitle:"希望垂耳兔小手机可以给你带来快乐^ ^"};
+    d.innerHTML=`<div class="island-content-collapsed"></div><div class="island-content-expanded"><div class="island-avatar"></div><div class="island-text"><div class="island-title" contenteditable="true">${dt.title}</div><div class="island-subtitle" contenteditable="true">${dt.subtitle}</div></div><div class="island-visualizer"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div></div><div class="remove-btn">×</div>`;
+    const ik=d.dataset.id+'_island';
+    if(globalImageCache[ik])d.querySelector('.island-avatar').style.backgroundImage=globalImageCache[ik];
+    else{const df="url('https://picsum.photos/seed/handsome/100')";d.querySelector('.island-avatar').style.backgroundImage=df;globalImageCache[ik]=df}
+    d.onclick=e=>{if(isEditing)return;if(e.target.closest('[contenteditable]')||e.target.classList.contains('remove-btn'))return;d.classList.toggle('expanded');if(d.classList.contains('expanded')){if(islandAudioUrl){audioEl.src=islandAudioUrl;audioEl.load();audioEl.play().catch(()=>{})}}else audioEl.pause()};
+    d.querySelector('.island-avatar').onclick=e=>{if(!isEditing){e.stopPropagation();activeEditType='widget';currentImgKey=ik;imgInput.click()}};
+    document.addEventListener('click',e=>{if(!d.contains(e.target)){d.classList.remove('expanded');audioEl.pause()}});
+    d.querySelectorAll('[contenteditable]').forEach(el=>{el.onclick=e=>e.stopPropagation();el.onblur=()=>saveLayout()});
+    d.querySelector('.remove-btn').onclick=e=>{e.stopPropagation();d.remove();updateAppStore();saveLayout()};
+    desktop.appendChild(d);
 }
 
-function createTwitterWidget(col,row,id,data=null){
-    const div=document.createElement('div');
-    div.className='widget-item widget-twitter';div.dataset.id=id||'tw-'+Date.now();div.dataset.type='twitter';div.dataset.col=col;div.dataset.row=row;
-    const d=data||{name:"XX",handle:"@QwQ_520",bio:"这里是心情签名..."};
-    div.innerHTML=`<div class="tw-header"></div><div class="tw-content"><div class="tw-avatar"></div><div class="tw-info-block"><div class="tw-name" contenteditable="true">${d.name}</div><div class="tw-handle" contenteditable="true">${d.handle}</div></div><div class="tw-bio" contenteditable="true">${d.bio}</div></div><div class="remove-btn">×</div>`;
-    const bgKey=div.dataset.id+'_bg',avatarKey=div.dataset.id+'_avatar';
-    if(!globalImageCache[bgKey]&&!data)globalImageCache[bgKey]="url('https://picsum.photos/seed/bg/300/150')";
-    if(!globalImageCache[avatarKey]&&!data)globalImageCache[avatarKey]="url('https://picsum.photos/seed/bunny/100')";
-    if(globalImageCache[bgKey])div.querySelector('.tw-header').style.backgroundImage=globalImageCache[bgKey];
-    if(globalImageCache[avatarKey])div.querySelector('.tw-avatar').style.backgroundImage=globalImageCache[avatarKey];
-    div.querySelector('.tw-header').onclick=()=>{if(!isEditing){activeEditType='widget';currentImgKey=bgKey;imgInput.click()}};
-    div.querySelector('.tw-avatar').onclick=()=>{if(!isEditing){activeEditType='widget';currentImgKey=avatarKey;imgInput.click()}};
-    div.querySelectorAll('[contenteditable]').forEach(el=>el.onblur=()=>saveLayout());
-    desktop.appendChild(div);initDrag(div);
+function createTwitterWidget(col,row,id,data){
+    const d=document.createElement('div');d.className='widget-item widget-twitter';d.dataset.id=id||'tw-'+Date.now();d.dataset.type='twitter';d.dataset.col=col;d.dataset.row=row;
+    const dt=data||{name:"XX",handle:"@QwQ_520",bio:"这里是心情签名..."};
+    d.innerHTML=`<div class="tw-header"></div><div class="tw-content"><div class="tw-avatar"></div><div class="tw-info-block"><div class="tw-name" contenteditable="true">${dt.name}</div><div class="tw-handle" contenteditable="true">${dt.handle}</div></div><div class="tw-bio" contenteditable="true">${dt.bio}</div></div><div class="remove-btn">×</div>`;
+    const bk=d.dataset.id+'_bg',ak=d.dataset.id+'_avatar';
+    if(!globalImageCache[bk]&&!data)globalImageCache[bk]="url('https://picsum.photos/seed/bg/300/150')";
+    if(!globalImageCache[ak]&&!data)globalImageCache[ak]="url('https://picsum.photos/seed/bunny/100')";
+    if(globalImageCache[bk])d.querySelector('.tw-header').style.backgroundImage=globalImageCache[bk];
+    if(globalImageCache[ak])d.querySelector('.tw-avatar').style.backgroundImage=globalImageCache[ak];
+    d.querySelector('.tw-header').onclick=()=>{if(!isEditing){activeEditType='widget';currentImgKey=bk;imgInput.click()}};
+    d.querySelector('.tw-avatar').onclick=()=>{if(!isEditing){activeEditType='widget';currentImgKey=ak;imgInput.click()}};
+    d.querySelectorAll('[contenteditable]').forEach(el=>el.onblur=()=>saveLayout());
+    desktop.appendChild(d);initDrag(d);
 }
 
 function createAppElement(id,col,row){
     const data=APP_DATABASE[id];if(!data)return;
-    const div=document.createElement('div');
-    div.className='app-item';div.dataset.id=id;div.dataset.type='app';div.dataset.col=col;div.dataset.row=row;
-    let iconContent=data.icon,iconStyle='';
-    if(customAppIcons[id]&&globalImageCache['icon_'+id]){iconContent='';iconStyle=`background-image:${globalImageCache['icon_'+id]};`}
-    div.innerHTML=`<div class="app-icon" style="${iconStyle}">${iconContent}</div><div class="app-name">${data.name}</div><div class="remove-btn">×</div>`;
-    desktop.appendChild(div);initDrag(div);
+    const d=document.createElement('div');d.className='app-item';d.dataset.id=id;d.dataset.type='app';d.dataset.col=col;d.dataset.row=row;
+    let ic=data.icon,is='';if(customAppIcons[id]&&globalImageCache['icon_'+id]){ic='';is=`background-image:${globalImageCache['icon_'+id]};`}
+    d.innerHTML=`<div class="app-icon" style="${is}">${ic}</div><div class="app-name">${data.name}</div><div class="remove-btn">×</div>`;
+    desktop.appendChild(d);initDrag(d);
 }
 
 function findEmptySpot(){
-    const grid=Array(7).fill().map(()=>Array(4).fill(false));
-    document.querySelectorAll('.app-item,.widget-item').forEach(el=>{
-        if(el.dataset.type==='island')return;
-        let r=parseInt(el.dataset.row),c=parseInt(el.dataset.col);
-        if(r>=0&&r<7&&c>=0&&c<4){grid[r][c]=true;if(el.dataset.type==='twitter'&&r+1<7)grid[r+1][c]=true}
-    });
-    for(let r=0;r<6;r++)for(let c=0;c<4;c++)if(!grid[r][c])return{r,c};
-    return{r:0,c:0};
+    const g=Array(7).fill().map(()=>Array(4).fill(false));
+    document.querySelectorAll('.app-item,.widget-item').forEach(el=>{if(el.dataset.type==='island')return;let r=parseInt(el.dataset.row),c=parseInt(el.dataset.col);if(r>=0&&r<7&&c>=0&&c<4){g[r][c]=true;if(el.dataset.type==='twitter'&&r+1<7)g[r+1][c]=true}});
+    for(let r=0;r<6;r++)for(let c=0;c<4;c++)if(!g[r][c])return{r,c};return{r:0,c:0};
 }
 
 function initDrag(el){
     if(el.dataset.type==='island')return;
-    el.style.left=(layoutMarginX+el.dataset.col*CELL_W)+'px';
-    el.style.top=(el.dataset.row*CELL_H)+'px';
-    if(el.querySelector('.remove-btn'))el.querySelector('.remove-btn').onclick=(e)=>{e.stopPropagation();el.remove();updateAppStore();saveLayout()};
+    el.style.left=(layoutMarginX+el.dataset.col*CELL_W)+'px';el.style.top=(el.dataset.row*CELL_H)+'px';
+    if(el.querySelector('.remove-btn'))el.querySelector('.remove-btn').onclick=e=>{e.stopPropagation();el.remove();updateAppStore();saveLayout()};
     const start=e=>{
         if(e.target.closest('[contenteditable]'))return;
         if(!isEditing){
-            const ev0=e.touches?e.touches[0]:e;
-            const sx=ev0.clientX,sy=ev0.clientY;
-            let moved=false;
-            const tm=m=>{const mv=m.touches?m.touches[0]:m;if(Math.abs(mv.clientX-sx)>6||Math.abs(mv.clientY-sy)>6)moved=true};
-            const te=()=>{window.removeEventListener('mousemove',tm);window.removeEventListener('touchmove',tm);window.removeEventListener('mouseup',te);window.removeEventListener('touchend',te);if(!moved&&el.dataset.type==='app')openApp(el.dataset.id)};
-            window.addEventListener('mousemove',tm);window.addEventListener('touchmove',tm,{passive:true});
-            window.addEventListener('mouseup',te);window.addEventListener('touchend',te);
-            return;
+            const e0=e.touches?e.touches[0]:e,sx=e0.clientX,sy=e0.clientY;let mv=false;
+            const tm=m=>{const v=m.touches?m.touches[0]:m;if(Math.abs(v.clientX-sx)>6||Math.abs(v.clientY-sy)>6)mv=true};
+            const te=()=>{window.removeEventListener('mousemove',tm);window.removeEventListener('touchmove',tm);window.removeEventListener('mouseup',te);window.removeEventListener('touchend',te);if(!mv&&el.dataset.type==='app')openApp(el.dataset.id)};
+            window.addEventListener('mousemove',tm);window.addEventListener('touchmove',tm,{passive:true});window.addEventListener('mouseup',te);window.addEventListener('touchend',te);return;
         }
-        activeEl=el;const ev=e.touches?e.touches[0]:e;
-        const rect=el.getBoundingClientRect();
-        const ox=ev.clientX-rect.left,oy=ev.clientY-rect.top;
-        const mh=move=>{const mev=move.touches?move.touches[0]:move;const dRect=desktop.getBoundingClientRect();el.classList.add('dragging');el.style.left=(mev.clientX-dRect.left-ox)+'px';el.style.top=(mev.clientY-dRect.top-oy)+'px'};
-        const eh=()=>{
-            window.removeEventListener('mousemove',mh);window.removeEventListener('touchmove',mh);
-            window.removeEventListener('mouseup',eh);window.removeEventListener('touchend',eh);
-            if(activeEl&&isEditing){
-                let col=Math.round((parseFloat(activeEl.style.left)-layoutMarginX)/CELL_W);
-                let row=Math.round(parseFloat(activeEl.style.top)/CELL_H);
-                activeEl.dataset.col=Math.max(0,Math.min(3,col));activeEl.dataset.row=Math.max(0,Math.min(6,row));
-                activeEl.classList.remove('dragging');
-                activeEl.style.left=(layoutMarginX+activeEl.dataset.col*CELL_W)+'px';
-                activeEl.style.top=(activeEl.dataset.row*CELL_H)+'px';
-                saveLayout();
-            }
-            activeEl=null;
-        };
-        window.addEventListener('mousemove',mh);window.addEventListener('touchmove',mh,{passive:false});
-        window.addEventListener('mouseup',eh);window.addEventListener('touchend',eh);
+        activeEl=el;const ev=e.touches?e.touches[0]:e,rect=el.getBoundingClientRect(),ox=ev.clientX-rect.left,oy=ev.clientY-rect.top;
+        const mh=m=>{const v=m.touches?m.touches[0]:m,dr=desktop.getBoundingClientRect();el.classList.add('dragging');el.style.left=(v.clientX-dr.left-ox)+'px';el.style.top=(v.clientY-dr.top-oy)+'px'};
+        const eh=()=>{window.removeEventListener('mousemove',mh);window.removeEventListener('touchmove',mh);window.removeEventListener('mouseup',eh);window.removeEventListener('touchend',eh);
+            if(activeEl&&isEditing){let c=Math.round((parseFloat(activeEl.style.left)-layoutMarginX)/CELL_W),r=Math.round(parseFloat(activeEl.style.top)/CELL_H);activeEl.dataset.col=Math.max(0,Math.min(3,c));activeEl.dataset.row=Math.max(0,Math.min(6,r));activeEl.classList.remove('dragging');activeEl.style.left=(layoutMarginX+activeEl.dataset.col*CELL_W)+'px';activeEl.style.top=(activeEl.dataset.row*CELL_H)+'px';saveLayout()}activeEl=null};
+        window.addEventListener('mousemove',mh);window.addEventListener('touchmove',mh,{passive:false});window.addEventListener('mouseup',eh);window.addEventListener('touchend',eh);
     };
     el.addEventListener('mousedown',start);el.addEventListener('touchstart',start);
 }
 
 function updateAppStore(){
-    appStoreGrid.innerHTML='';
-    const installed=Array.from(document.querySelectorAll('.app-item')).map(el=>el.dataset.id);
-    for(let id in APP_DATABASE){
-        if(id.startsWith('dock-'))continue;
-        if(!installed.includes(id)){
-            const div=document.createElement('div');
-            div.style="display:flex;flex-direction:column;align-items:center;cursor:pointer;";
-            div.innerHTML=`<div class="app-icon" style="width:55px;height:55px;font-size:26px;">${APP_DATABASE[id].icon}</div><div style="font-size:10px;margin-top:4px;">${APP_DATABASE[id].name}</div>`;
-            div.onclick=()=>{const s=findEmptySpot();createAppElement(id,s.c,s.r);if(isEditing&&desktop.lastChild)desktop.lastChild.classList.add('jiggling');updateAppStore();saveLayout()};
-            appStoreGrid.appendChild(div);
-        }
-    }
+    appStoreGrid.innerHTML='';const ins=Array.from(document.querySelectorAll('.app-item')).map(e=>e.dataset.id);
+    for(let id in APP_DATABASE){if(id.startsWith('dock-'))continue;if(!ins.includes(id)){const d=document.createElement('div');d.style="display:flex;flex-direction:column;align-items:center;cursor:pointer";d.innerHTML=`<div class="app-icon" style="width:55px;height:55px;font-size:26px">${APP_DATABASE[id].icon}</div><div style="font-size:10px;margin-top:4px">${APP_DATABASE[id].name}</div>`;d.onclick=()=>{const s=findEmptySpot();createAppElement(id,s.c,s.r);if(isEditing&&desktop.lastChild)desktop.lastChild.classList.add('jiggling');updateAppStore();saveLayout()};appStoreGrid.appendChild(d)}}
 }
 function updateDiyGrid(){
-    appDiyGrid.innerHTML='';
-    for(let id in APP_DATABASE){
-        const div=document.createElement('div');div.className='app-edit-item';
-        let style='',content=APP_DATABASE[id].icon;
-        if(customAppIcons[id]&&globalImageCache['icon_'+id]){style=`background-image:${globalImageCache['icon_'+id]}`;content=''}
-        div.innerHTML=`<div class="app-edit-icon" style="${style}">${content}</div><div class="app-edit-name">${APP_DATABASE[id].name}</div>`;
-        div.onclick=()=>{activeEditType='app-icon';activeAppId=id;imgInput.click()};
-        appDiyGrid.appendChild(div);
-    }
+    appDiyGrid.innerHTML='';for(let id in APP_DATABASE){const d=document.createElement('div');d.className='app-edit-item';let s='',c=APP_DATABASE[id].icon;if(customAppIcons[id]&&globalImageCache['icon_'+id]){s=`background-image:${globalImageCache['icon_'+id]}`;c=''}d.innerHTML=`<div class="app-edit-icon" style="${s}">${c}</div><div class="app-edit-name">${APP_DATABASE[id].name}</div>`;d.onclick=()=>{activeEditType='app-icon';activeAppId=id;imgInput.click()};appDiyGrid.appendChild(d)}
 }
-function addNewWidget(type){
-    const s=findEmptySpot();
-    if(type==='twitter')createTwitterWidget(s.c,s.r);
-    else if(type==='island')createIslandWidget(0,0);
-    if(isEditing&&desktop.lastChild)desktop.lastChild.classList.add('jiggling');
-    closePanels();saveLayout();
-}
+function addNewWidget(t){const s=findEmptySpot();if(t==='twitter')createTwitterWidget(s.c,s.r);else if(t==='island')createIslandWidget(0,0);if(isEditing&&desktop.lastChild)desktop.lastChild.classList.add('jiggling');closePanels();saveLayout()}
 function closePanels(){widgetPanel.classList.remove('active');diyPanel.classList.remove('active')}
 
 addBtn.onclick=()=>{updateAppStore();closePanels();widgetPanel.classList.add('active')};
 diyBtn.onclick=()=>{updateDiyGrid();closePanels();diyPanel.classList.add('active')};
-function triggerWallaper(type){activeEditType=(type==='lock'?'wallpaper-lock':'wallpaper-home');imgInput.click()}
+function triggerWallaper(t){activeEditType=(t==='lock'?'wallpaper-lock':'wallpaper-home');imgInput.click()}
 
-imgInput.onchange=(e)=>{
-    const file=e.target.files[0];if(!file)return;
-    const reader=new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload=(ev)=>{
-        const cssUrl=`url("${ev.target.result}")`;
-        if(activeEditType==='widget'){
-            globalImageCache[currentImgKey]=cssUrl;
-            if(currentImgKey.includes('bg')){const id=currentImgKey.split('_')[0];const el=document.querySelector(`.widget-twitter[data-id="${id}"] .tw-header`);if(el)el.style.backgroundImage=cssUrl}
-            else if(currentImgKey.includes('avatar')){const id=currentImgKey.split('_')[0];const el=document.querySelector(`.widget-twitter[data-id="${id}"] .tw-avatar`);if(el)el.style.backgroundImage=cssUrl}
-            else if(currentImgKey.includes('island')){const id=currentImgKey.split('_')[0];const el=document.querySelector(`.widget-island[data-id="${id}"] .island-avatar`);if(el)el.style.backgroundImage=cssUrl}
-        }else if(activeEditType==='wallpaper-lock'){
-            globalImageCache['wallpaper_lock']=cssUrl;lockScreen.style.backgroundImage=cssUrl;document.getElementById('wp-lock-preview').style.backgroundImage=cssUrl;
-        }else if(activeEditType==='wallpaper-home'){
-            globalImageCache['wallpaper_home']=cssUrl;document.getElementById('home-screen').style.backgroundImage=cssUrl;document.getElementById('wp-home-preview').style.backgroundImage=cssUrl;
-        }else if(activeEditType==='app-icon'){
-            globalImageCache['icon_'+activeAppId]=cssUrl;customAppIcons[activeAppId]=true;
-            const da=document.querySelector(`.app-item[data-id="${activeAppId}"] .app-icon`);if(da){da.innerText='';da.style.backgroundImage=cssUrl}
-            const dk=document.querySelector(`.app-icon[data-dock-id="${activeAppId}"]`);if(dk){dk.innerText='';dk.style.backgroundImage=cssUrl}
-            updateDiyGrid();
-        }
+imgInput.onchange=e=>{
+    const f=e.target.files[0];if(!f)return;const reader=new FileReader();reader.readAsDataURL(f);
+    reader.onload=ev=>{
+        const u=`url("${ev.target.result}")`;
+        if(activeEditType==='widget'){globalImageCache[currentImgKey]=u;if(currentImgKey.includes('bg')){const id=currentImgKey.split('_')[0];const el=document.querySelector(`.widget-twitter[data-id="${id}"] .tw-header`);if(el)el.style.backgroundImage=u}else if(currentImgKey.includes('avatar')){const id=currentImgKey.split('_')[0];const el=document.querySelector(`.widget-twitter[data-id="${id}"] .tw-avatar`);if(el)el.style.backgroundImage=u}else if(currentImgKey.includes('island')){const id=currentImgKey.split('_')[0];const el=document.querySelector(`.widget-island[data-id="${id}"] .island-avatar`);if(el)el.style.backgroundImage=u}}
+        else if(activeEditType==='wallpaper-lock'){globalImageCache['wallpaper_lock']=u;lockScreen.style.backgroundImage=u;document.getElementById('wp-lock-preview').style.backgroundImage=u}
+        else if(activeEditType==='wallpaper-home'){globalImageCache['wallpaper_home']=u;document.getElementById('home-screen').style.backgroundImage=u;document.getElementById('wp-home-preview').style.backgroundImage=u}
+        else if(activeEditType==='app-icon'){globalImageCache['icon_'+activeAppId]=u;customAppIcons[activeAppId]=true;const da=document.querySelector(`.app-item[data-id="${activeAppId}"] .app-icon`);if(da){da.innerText='';da.style.backgroundImage=u}const dk=document.querySelector(`.app-icon[data-dock-id="${activeAppId}"]`);if(dk){dk.innerText='';dk.style.backgroundImage=u}updateDiyGrid()}
         saveLayout();
-    };
-    imgInput.value='';
+    };imgInput.value='';
 };
 
 let longPressTimer;
-desktop.addEventListener('touchstart',(e)=>{
-    if(isEditing||e.target.closest('.remove-btn')||e.target.closest('[contenteditable]')||e.target.closest('.icon-btn')||e.target.classList.contains('widget-island'))return;
-    longPressTimer=setTimeout(()=>{
-        isEditing=true;doneBtn.style.display='block';addBtn.style.display='block';diyBtn.style.display='block';
-        document.querySelectorAll('.app-item,.widget-item').forEach(el=>el.classList.add('jiggling'));
-    },800);
+desktop.addEventListener('touchstart',e=>{
+    if(isEditing||e.target.closest('.remove-btn')||e.target.closest('[contenteditable]')||e.target.classList.contains('widget-island'))return;
+    longPressTimer=setTimeout(()=>{isEditing=true;doneBtn.style.display='block';addBtn.style.display='block';diyBtn.style.display='block';document.querySelectorAll('.app-item,.widget-item').forEach(el=>el.classList.add('jiggling'))},800);
 });
 desktop.addEventListener('touchend',()=>clearTimeout(longPressTimer));
 
-doneBtn.onclick=()=>{
-    isEditing=false;doneBtn.style.display='none';addBtn.style.display='none';diyBtn.style.display='none';
-    document.querySelectorAll('.app-item,.widget-item').forEach(el=>el.classList.remove('jiggling'));
-    saveLayout();
-};
+doneBtn.onclick=()=>{isEditing=false;doneBtn.style.display='none';addBtn.style.display='none';diyBtn.style.display='none';document.querySelectorAll('.app-item,.widget-item').forEach(el=>el.classList.remove('jiggling'));saveLayout()};
 
 let lStartY=0;
-lockScreen.ontouchstart=(e)=>{lStartY=e.touches[0].clientY;lockScreen.style.transition='none'};
-lockScreen.ontouchmove=(e)=>{let diff=e.touches[0].clientY-lStartY;if(diff<0)lockScreen.style.transform=`translateY(${diff}px)`};
-lockScreen.ontouchend=(e)=>{lockScreen.style.transition='transform 0.4s ease';if(e.changedTouches[0].clientY-lStartY<-150)lockScreen.style.transform='translateY(-100%)';else lockScreen.style.transform='translateY(0)'};
+lockScreen.ontouchstart=e=>{lStartY=e.touches[0].clientY;lockScreen.style.transition='none'};
+lockScreen.ontouchmove=e=>{let d=e.touches[0].clientY-lStartY;if(d<0)lockScreen.style.transform=`translateY(${d}px)`};
+lockScreen.ontouchend=e=>{lockScreen.style.transition='transform 0.4s ease';if(e.changedTouches[0].clientY-lStartY<-150)lockScreen.style.transform='translateY(-100%)';else lockScreen.style.transform='translateY(0)'};
 document.getElementById('to-lock').onclick=()=>{if(!isEditing)lockScreen.style.transform='translateY(0)'};
 
-setInterval(()=>{
-    const d=new Date();
-    document.getElementById('clock').innerText=`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-    const days=['日','一','二','三','四','五','六'];
-    document.getElementById('date-str').innerText=`${d.getMonth()+1}月${d.getDate()}日 星期${days[d.getDay()]}`;
-},1000);
+setInterval(()=>{const d=new Date();document.getElementById('clock').innerText=`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;const days=['日','一','二','三','四','五','六'];document.getElementById('date-str').innerText=`${d.getMonth()+1}月${d.getDate()}日 星期${days[d.getDay()]}`},1000);
 
 loadLayout();
 
-document.querySelectorAll('.app-icon[data-dock-id]').forEach(el=>{
-    el.addEventListener('click',()=>{const id=el.dataset.dockId;if(APP_URLS[id])openApp(id)});
-});
+document.querySelectorAll('.app-icon[data-dock-id]').forEach(el=>{el.addEventListener('click',()=>{const id=el.dataset.dockId;if(APP_URLS[id])openApp(id)})});
 </script>
 </body>
 </html>
